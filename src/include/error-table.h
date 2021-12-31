@@ -8,17 +8,11 @@ unsigned int currlne;
 
 void init_error () {
     printf("wgpp: error detected on %d line\n", currlne);
-    printf("%d | %s\n", currlne, contents.c_str());
 }
 
 void _err_semicolon () {
     init_error();
-    for ( size_t i = 0; i <= contents.size() + std::to_string(currlne).size() + 2; ++i ) {
-        printf(" ");
-    }
-    printf("^\n");;
     printf("Semicolon expected\n");
-
     exit(1);
 }
 

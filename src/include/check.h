@@ -5,6 +5,7 @@
 #include "error-table.h"
 
 bool exit_function_by_number (std::vector<token> *head) {
+    printf("%d\n", (int) head->size());
     if ( head->size() != 3 ) {
         _err_many_arguments();
     }

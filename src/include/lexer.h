@@ -66,15 +66,15 @@ void clean (const std::string src) {
             }
         }
 
+
         cline += src[idx];
         idx++;
     }
 
     if ( cline != "#" ) {
-        if ( cline.at(idx - 2) != ';' ) {
+        if ( cline[cline.size() - 1]  != ';' ) {
             _err_semicolon();
         }
-        printf("hey\n");
         int idxhead = get_headidx();
         lexer(cline, idxhead);
     }
