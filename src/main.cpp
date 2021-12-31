@@ -1,37 +1,37 @@
+#include "include/lexer.h"
+#include "include/error-table.h"
+#include "include/token-funcs.h"
 #include <iostream>
-#include <unistd.h>
+#include <fstream>
 using namespace std;
 
-void print_nums (int64_t num) {
-    bool negative = false;
-    if ( (int) num <= -1 ) {
-        negative = !negative;
-        num *= -1;
+void _start (char *filename) {
+    ifstream file (filename);
+    if ( !file.good() ) {
+        printf("%s doesn't exist\n", filename);
+        exit (1);
     }
 
-    char buf[32];
-    size_t buf_sz = 1;
-    buf[sizeof(buf) - buf_sz] = '\n';
-
-    do {
-        buf[sizeof(buf) - buf_sz - 1] = num % 10 + '0';
-        cout << sizeof(buf) << endl;
-        buf_sz++;
-        num /= 10;
-    } while (num);
-    if ( negative ) {
-        buf_sz++;
-        buf[sizeof(buf) - buf_sz] = '-';
+    while ( !file.eof() ) {
+        getline(file, contents);
+        if ( !contents.empty() ) {
+            clean(contents);
+        }
+        currlne++;
     }
 
-    write(1, &buf[sizeof(buf) - buf_sz], buf_sz);
+    parser();
+    string final_ = "./asm-union.sh ";
+    final_.append(filename);
+    system(final_.c_str());
 }
 
-int main () {
-    print_nums(-345);
-    print_nums(209);
-    print_nums(-4345);
-    print_nums(16);
+int main (int argc, char* argv[]) {
+    if ( argc != 2 ) {
+        printf("Not enough arguments\n");
+        exit(1);
+    }
 
+    _start(argv[1]);
     return 0;
 }
