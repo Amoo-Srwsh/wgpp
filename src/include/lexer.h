@@ -39,6 +39,17 @@ void lexer (const std::string src, int idxhead) {
             idx += number.size() - 1;
             token = "";
         }
+        else if ( token == "print" ) {
+            push_token(idxhead, PRINT_FUNCTION, "print");
+            token = "";
+        }
+        else if ( src[idx] == '"' ) {
+            std::string str = get_all_string(src, idx + 1);
+            push_token(idxhead, STRING, str);
+
+            idx += str.size() + 1;
+            token = "";
+        }
 
         idx++;
     }
@@ -55,6 +66,12 @@ void clean (const std::string src) {
 
         if ( src[idx] == '#' )
             comment = true;
+        if ( src[idx] == '"' ) {
+            std::string str = get_all_string(src, idx);
+            cline.append(str);
+            idx += str.size();
+        }
+
         while ( comment ) {
             idx++;
             if ( src[idx] == '#' ) {
@@ -65,7 +82,6 @@ void clean (const std::string src) {
                 return;
             }
         }
-
 
         cline += src[idx];
         idx++;

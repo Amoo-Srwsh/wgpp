@@ -5,7 +5,6 @@
 #include "error-table.h"
 
 bool exit_function_by_number (std::vector<token> *head) {
-    printf("%d\n", (int) head->size());
     if ( head->size() != 3 ) {
         _err_many_arguments();
     }
@@ -16,6 +15,22 @@ bool exit_function_by_number (std::vector<token> *head) {
     }
 
     if ( head->at(1).type == NUMBER ){
+        return true;
+    }
+    return false;
+}
+
+bool print_function_by_str (std::vector<token> *head) {
+    if ( head->size() != 3 ) {
+        _err_many_arguments();
+    }
+
+    // could be a variable too
+    if ( head->at(1).type != STRING ) {
+        _err_different_type();
+    }
+
+    if ( head->at(1).type == STRING ){
         return true;
     }
     return false;

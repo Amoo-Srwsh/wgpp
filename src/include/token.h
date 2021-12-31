@@ -8,7 +8,9 @@ enum TokenType {
     THEAD,
     EXIT_FUNCTION,
     NUMBER,
-    SEMI_COLON
+    SEMI_COLON,
+    PRINT_FUNCTION,
+    STRING
 };
 
 typedef struct TOKEN {

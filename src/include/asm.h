@@ -3,11 +3,32 @@
 
 #include <iostream>
 
+int labelSTR_TO_PRINT = 1;
+
 void init_asm1 (FILE *asm1) {
     fprintf(asm1, "section .text\n");
     fprintf(asm1, "\tglobal _start\n");
     fprintf(asm1, "_start:\n");
 }
+
+void _wg_exit_by_number (FILE* asm1, const std::string exitstatus) {
+    fprintf(asm1, "\tmov rax, 60\n");
+    fprintf(asm1, "\tmov rdi, %s\n", exitstatus.c_str());
+    fprintf(asm1, "\tsyscall\n");
+}
+
+void _wg_print_by_str (FILE* asm2, const std::string buffer, int length) {
+    fprintf(asm2, "\tmov rax, 1\n");
+    fprintf(asm2, "\tmov rdi, 1\n");
+    fprintf(asm2, "\tmov rsi, %s\n", buffer.c_str());
+    fprintf(asm2, "\tmov rdx, %d\n", length);
+    fprintf(asm2, "\tsyscall\n");
+}
+
+
+
+// -------------------------------------------------------------------------------------------------- //
+
 
 void init_asm2 (FILE *asm2) {
     fprintf(asm2, "\n\n;---------------------------------------------------- PRINT NUMBER CODE ----------------------------------------------- ;\n");
@@ -68,10 +89,15 @@ void init_asm2 (FILE *asm2) {
     fprintf(asm2, "section .data\n");
 }
 
-void _wg_exit_by_number (FILE* asm1, const std::string exitstatus) {
-    fprintf(asm1, "\tmov rax, 60\n");
-    fprintf(asm1, "\tmov rdi, %s\n", exitstatus.c_str());
-    fprintf(asm1, "\tsyscall\n");
+std::string _wg_label_string (FILE* asm2, const std::string code_str) {
+    // lsp = label string print
+    std::string currentLSP = "lsp";
+    currentLSP += std::to_string(labelSTR_TO_PRINT);
+
+    fprintf(asm2, "\t%s db %s\n", currentLSP.c_str(), code_str.c_str());
+    labelSTR_TO_PRINT++;
+
+    return currentLSP;
 }
 
 

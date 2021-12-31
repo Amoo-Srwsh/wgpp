@@ -6,6 +6,7 @@ This is the continuation of my first ["programming language"](https://github.com
 ## Done
 * [x] Exit function with numbers
 * [x] Ignore comments and whitespaces
+* [x] Print strings
 
 ## To Do
 * Exit function with integer variables
