@@ -7,14 +7,15 @@ This is the continuation of my first ["programming language"](https://github.com
 * [x] Exit function with numbers
 * [x] Ignore comments and whitespaces
 * [x] Print strings
+* [x] Many instructions in one line
 
 ## To Do
 * Exit function with integer variables
 * Print function
 
 Every assembly code will be saved at `./src/out`
-## References
 
+## References
 * [x86_64 assembly](https://en.wikipedia.org/wiki/X86_assembly_language)
 * [Ascii code](https://elcodigoascii.com.ar/)
 

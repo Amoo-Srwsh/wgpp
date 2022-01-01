@@ -4,7 +4,7 @@
 #include <iostream>
 
 std::string contents;
-unsigned int currlne;
+unsigned int currlne = 1;
 
 void init_error () {
     printf("wgpp: error detected on %d line\n", currlne);

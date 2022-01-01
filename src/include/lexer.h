@@ -60,6 +60,14 @@ void clean (const std::string src) {
     size_t idx = 0;
 
     while ( src[idx] != '\0' ) {
+        if ( src[idx] == ';' && src[idx + 1] != '\0' ) {
+            cline += src[idx];
+            idx++;
+            lexer(cline, get_headidx());
+
+            cline = "";
+        }
+
         while ( std::isspace(src[idx]) ) {
             idx++;
         }
@@ -74,6 +82,7 @@ void clean (const std::string src) {
 
         while ( comment ) {
             idx++;
+
             if ( src[idx] == '#' ) {
                 comment = false;
             }
@@ -91,8 +100,7 @@ void clean (const std::string src) {
         if ( cline[cline.size() - 1]  != ';' ) {
             _err_semicolon();
         }
-        int idxhead = get_headidx();
-        lexer(cline, idxhead);
+        lexer(cline, get_headidx());
     }
 }
 

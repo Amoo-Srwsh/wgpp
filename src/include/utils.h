@@ -22,6 +22,7 @@ std::string get_all_string (const std::string src, int from) {
         if ( src[from] == '"' ) {
             break;
         }
+
     } while ( true );
 
     return str;

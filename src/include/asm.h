@@ -14,7 +14,7 @@ void init_asm1 (FILE *asm1) {
 void _wg_exit_by_number (FILE* asm1, const std::string exitstatus) {
     fprintf(asm1, "\tmov rax, 60\n");
     fprintf(asm1, "\tmov rdi, %s\n", exitstatus.c_str());
-    fprintf(asm1, "\tsyscall\n");
+    fprintf(asm1, "\tsyscall\n\n");
 }
 
 void _wg_print_by_str (FILE* asm2, const std::string buffer, int length) {
@@ -22,7 +22,7 @@ void _wg_print_by_str (FILE* asm2, const std::string buffer, int length) {
     fprintf(asm2, "\tmov rdi, 1\n");
     fprintf(asm2, "\tmov rsi, %s\n", buffer.c_str());
     fprintf(asm2, "\tmov rdx, %d\n", length);
-    fprintf(asm2, "\tsyscall\n");
+    fprintf(asm2, "\tsyscall\n\n");
 }
 
 
@@ -99,6 +99,5 @@ std::string _wg_label_string (FILE* asm2, const std::string code_str) {
 
     return currentLSP;
 }
-
 
 #endif
