@@ -15,9 +15,9 @@ void _start (char *filename) {
     while ( !file.eof() ) {
         getline(file, contents);
         if ( !contents.empty() ) {
+            currlne++;
             clean(contents);
         }
-        currlne++;
     }
 
     parser();

@@ -4,10 +4,10 @@
 #include <iostream>
 
 std::string contents;
-unsigned int currlne = 1;
+unsigned int currlne = 0;
 
 void init_error () {
-    printf("wgpp: error detected on %d line\n", currlne);
+    printf("\nwgpp: error detected on %d line\n", currlne);
 }
 
 void _err_semicolon () {
