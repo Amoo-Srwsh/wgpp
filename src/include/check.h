@@ -6,11 +6,10 @@
 
 bool exit_function_by_number (std::vector<token> *head) {
     if ( head->size() != 3 ) {
-        _err_many_arguments();
+        _err_arguments();
     }
 
-    // could be a integer variable too
-    if ( head->at(1).type != NUMBER ) {
+    if ( head->at(1).type != NUMBER && head->at(1).type != VAR_NAME ) {
         _err_different_type();
     }
 
@@ -22,11 +21,11 @@ bool exit_function_by_number (std::vector<token> *head) {
 
 bool print_function_by_str (std::vector<token> *head) {
     if ( head->size() != 3 ) {
-        _err_many_arguments();
+        _err_arguments();
     }
 
     // could be a variable too
-    if ( head->at(1).type != STRING ) {
+    if ( head->at(1).type != STRING && head->at(1).type != VAR_NAME ) {
         _err_different_type();
     }
 

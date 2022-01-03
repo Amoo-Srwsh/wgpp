@@ -1,10 +1,14 @@
 section .text
 	global _start
 _start:
+	push rbp
+	mov rbp, rsp
+	mov QWORD [rbp - 4], -1
+	mov rax, QWORD [rbp - 4]
+	mov rdx, rax
 	mov rax, 60
-	mov rdi, 0
+	mov rdi, rdx
 	syscall
-
 
 
 ;---------------------------------------------------- PRINT NUMBER CODE ----------------------------------------------- ;

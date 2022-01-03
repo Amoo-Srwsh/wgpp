@@ -11,7 +11,7 @@ endif
 syntax keyword wgppTodos TODO XXX FIXME NOTE
 
 " Language keywords
-syntax keyword wgppKeywords exit, print
+syntax keyword wgppKeywords exit print int
 
 " Comments
 syntax region wgppCommentLine start="#" contains=wgppTodos

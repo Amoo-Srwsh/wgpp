@@ -10,7 +10,10 @@ enum TokenType {
     NUMBER,
     SEMI_COLON,
     PRINT_FUNCTION,
-    STRING
+    STRING,
+    VAR_NAME,
+    INT_VAR,
+    EQUAL_SYMBOL
 };
 
 typedef struct TOKEN {

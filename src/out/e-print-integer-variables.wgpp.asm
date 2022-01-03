@@ -3,44 +3,93 @@ section .text
 _start:
 	push rbp
 	mov rbp, rsp
+	mov DWORD [rbp - 8], 16
+	mov DWORD [rbp - 12], 2
+	mov edi, DWORD [rbp - 8]
+	mov r15d, edi
+	call PrintNumber
+	mov DWORD [rbp - 8], r15d
+
 	mov rax, 1
 	mov rdi, 1
 	mov rsi, lsp1
-	mov rdx, 5
+	mov rdx, 1
 	syscall
+
+	mov edi, DWORD [rbp - 8]
+	mov r15d, edi
+	call PrintNumber
+	mov DWORD [rbp - 8], r15d
 
 	mov rax, 1
 	mov rdi, 1
 	mov rsi, lsp2
-	mov rdx, 13
+	mov rdx, 1
 	syscall
+
+	mov edi, DWORD [rbp - 8]
+	mov r15d, edi
+	call PrintNumber
+	mov DWORD [rbp - 8], r15d
 
 	mov rax, 1
 	mov rdi, 1
 	mov rsi, lsp3
-	mov rdx, 3
+	mov rdx, 1
 	syscall
+
+	mov edi, DWORD [rbp - 8]
+	mov r15d, edi
+	call PrintNumber
+	mov DWORD [rbp - 8], r15d
 
 	mov rax, 1
 	mov rdi, 1
 	mov rsi, lsp4
-	mov rdx, 4
+	mov rdx, 1
 	syscall
+
+	mov edi, DWORD [rbp - 8]
+	mov r15d, edi
+	call PrintNumber
+	mov DWORD [rbp - 8], r15d
 
 	mov rax, 1
 	mov rdi, 1
 	mov rsi, lsp5
-	mov rdx, 5
+	mov rdx, 1
 	syscall
+
+	mov edi, DWORD [rbp - 8]
+	mov r15d, edi
+	call PrintNumber
+	mov DWORD [rbp - 8], r15d
 
 	mov rax, 1
 	mov rdi, 1
 	mov rsi, lsp6
-	mov rdx, 33
+	mov rdx, 1
+	syscall
+
+	mov rax, 1
+	mov rdi, 1
+	mov rsi, lsp7
+	mov rdx, 20
+	syscall
+
+	mov edi, DWORD [rbp - 12]
+	mov r15d, edi
+	call PrintNumber
+	mov DWORD [rbp - 12], r15d
+
+	mov rax, 1
+	mov rdi, 1
+	mov rsi, lsp8
+	mov rdx, 1
 	syscall
 
 	mov rax, 60
-	mov rdi, 0
+	mov rdi, QWORD [rbp - 12]
 	syscall
 
 
@@ -97,9 +146,11 @@ PrintNumber:
 ; ---------------------------------------------------- PRINT NUMBER CODE ----------------------------------------------- ;
 
 section .data
-	lsp1 db 77,97,110,121,32
-	lsp2 db 105,110,115,116,114,117,99,116,105,111,110,115,32
-	lsp3 db 105,110,32
-	lsp4 db 111,110,101,32
-	lsp5 db 108,105,110,101,10
-	lsp6 db 109,121,32,102,105,114,115,116,32,108,105,110,101,32,111,102,32,99,111,100,101,32,111,110,32,50,48,50,50,32,58,68,10
+	lsp1 db 10
+	lsp2 db 10
+	lsp3 db 10
+	lsp4 db 10
+	lsp5 db 10
+	lsp6 db 10
+	lsp7 db 67,111,100,101,32,101,114,114,111,114,32,119,105,108,108,32,98,101,58,32
+	lsp8 db 10

@@ -30,11 +30,17 @@ void parser () {
     for (size_t i = 0; i < Thead.size(); ++i) {
         std::vector<token> *current = &Thead.at(i);
 
+        if ( current->at(0).type == INT_VAR ) {
+            _wg_make_int_var(asm_p1, current->at(3).value, current->at(1).value);
+        }
+
         if ( current->at(0).type == EXIT_FUNCTION ) {
             if ( exit_function_by_number(current) ) {
                 _wg_exit_by_number( asm_p1, current->at(1).value );
             }
-            // TODO: exit with variable
+            else {
+                _wg_exit_int_variable(asm_p1, current->at(1).value);
+            }
         }
 
         if ( current->at(0).type == PRINT_FUNCTION ) {
@@ -45,10 +51,10 @@ void parser () {
 
                 _wg_print_by_str(asm_p1, namelabel, length);
             }
+            else {
+                _wg_print_int_variable(asm_p1, current->at(1).value);
+            }
         }
-
-
-
 
         for (size_t j = 0; j < Thead.at(i).size(); ++j) {
             printf("(%s :: %d), ", Thead.at(i).at(j).value.c_str(), Thead.at(i).at(j).type);

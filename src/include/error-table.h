@@ -16,9 +16,9 @@ void _err_semicolon () {
     exit(1);
 }
 
-void _err_many_arguments () {
+void _err_arguments () {
     init_error();
-    printf("There are so many args in this function!\n");
+    printf("There are not the rigth number of arguements\n");
     exit(1);
 }
 
