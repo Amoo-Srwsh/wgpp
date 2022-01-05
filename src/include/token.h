@@ -1,26 +1,20 @@
-#ifndef WG___TOKEN_H
-#define WG___TOKEN_H
+#ifndef WGP___TOKEN_H
+#define WGP___TOKEN_H
 
 #include <iostream>
 #include <vector>
 
-enum TokenType {
-    THEAD,
-    EXIT_FUNCTION,
+enum _TokenType {
+    KEYWORD,
     NUMBER,
     SEMI_COLON,
-    PRINT_FUNCTION,
-    STRING,
-    VAR_NAME,
-    INT_VAR,
-    EQUAL_SYMBOL
+    STRING
 };
 
 typedef struct TOKEN {
-    TokenType type;
+    _TokenType type;
     std::string value;
-    TOKEN* children;
 } token;
-std::vector<std::vector<token>> Thead;
+std::vector<std::vector<token>> thds;
 
 #endif

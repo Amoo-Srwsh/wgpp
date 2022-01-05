@@ -1,2 +1,0 @@
-int number = 0;
-exit $number$;

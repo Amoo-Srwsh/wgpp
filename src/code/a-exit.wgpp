@@ -1,4 +1,2 @@
-# This is a comment #
-# A comment could be in several
-lines, but always must be closed #
-exit 0;
+exit 16;
+exit -3;

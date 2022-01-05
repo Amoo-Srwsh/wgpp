@@ -8,11 +8,13 @@ Every assembly code will be saved at `./src/out`
 * [x] Exit function with numbers
 * [x] Ignore comments and whitespaces
 * [x] Print strings
-* [x] Many instructions in one line
-* [x] Print function complete
-* [x] Exit function with variables
 
 ## To Do
+* With GNU Assembly
+* Integer variables
+* Print function complete
+* Many instructions in one line
+* Exit function with variables
 * Arithmetic
 
 ## References

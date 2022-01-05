@@ -1,73 +1,49 @@
 #ifndef WG___LEXER_H
 #define WG___LEXER_H
 
-#include "token-funcs.h"
-#include "utils.h"
-#include "error-table.h"
+#include "token-func.h"
+#include "helps.h"
 
-/* A comment could be in a several lines so we need to know if one comment has been 
- * opened and if will be closed */
+/* A comment could be in a several lines, so we need to know
+ * if a comment was opened on 1 line and will be closed on N line */
 bool comment = false;
 
-void lexer (const std::string src, int idxhead) {
-    std::string token = "";
+void lexer (const std::string _final, int idxTKN) {
     size_t idx = 0;
+    std::string token = "";
 
-    while ( src[idx] != '\0' ) {
-        token += src[idx];
+    while ( _final[idx] != '\0' ) {
+        token += _final[idx];
 
         if ( token == ";" ) {
-            push_token(idxhead, SEMI_COLON, ";");
-            token = "";
-        }
-        if ( token == "exit" ) {
-            push_token(idxhead, EXIT_FUNCTION, "exit");
-            token = "";
-        }
-        else if ( std::isdigit(src[idx]) ) {
-            std::string number = get_all_num(src, idx);
-            push_token(idxhead, NUMBER, number);
-
-            idx += number.size() - 1;
-            token = "";
-        }
-        else if ( src[idx] == '-' && std::isdigit(src[idx + 1]) ) {
-            std::string number = get_all_num(src, idx + 1);
-            number.insert(0, "-");
-            push_token(idxhead, NUMBER, number);
-
-            idx += number.size() - 1;
+            push_token(idxTKN, SEMI_COLON, token);
             token = "";
         }
         else if ( token == "print" ) {
-            push_token(idxhead, PRINT_FUNCTION, "print");
+            push_token(idxTKN, KEYWORD, token);
             token = "";
         }
-        else if ( src[idx] == '"' ) {
-            std::string str = get_all_string(src, idx + 1);
-            push_token(idxhead, STRING, str);
-
-            idx += str.size() + 1;
+        else if ( token == "exit" ) {
+            push_token(idxTKN, KEYWORD, token);
             token = "";
         }
-        else if ( token == "int" ) {
-            push_token(idxhead, INT_VAR, "int");
+        else if ( std::isdigit(token[0]) ) {
+            std::string number = get_whole_num(_final, idx);
+            push_token(idxTKN, NUMBER, number);
             token = "";
+            idx += number.size() - 1;
         }
-        else if ( token[token.size() -1 ] == '=' ) {
-            std::string namevariable = token.substr(0, token.size() - 1);
-            push_token(idxhead, VAR_NAME, namevariable);
-            push_token(idxhead, EQUAL_SYMBOL, "=");
+        else if ( token[0] == '-' && std::isdigit(_final[idx + 1]) ) {
+            std::string number = get_whole_num(_final, idx);
+            push_token(idxTKN, NUMBER, number);
             token = "";
+            idx += number.size() - 1;
         }
-        else if ( src[idx] == '$' ) {
-            token = "";
-            do {
-                idx++;
-                token += src[idx];
-            } while ( src[idx] != '$' );
-            
-            push_token(idxhead, VAR_NAME, token.substr(0, token.size() - 1));
+        else if ( token[0] == '"' ) {
+            std::string str = get_whole_str(_final, idx);
+            str += '"';
+            push_token(idxTKN, STRING, str);
+            idx += str.size() - 1;
             token = "";
         }
 
@@ -75,54 +51,41 @@ void lexer (const std::string src, int idxhead) {
     }
 }
 
-void clean (const std::string src) {
-    std::string cline = "";
+void clean_line (const std::string oline) {
     size_t idx = 0;
+    std::string cline = "";
 
-    while ( src[idx] != '\0' ) {
-        if ( src[idx] == ';' && src[idx + 1] != '\0' ) {
-            cline += src[idx];
+    while ( oline[idx] != '\0' ) {
+        while ( std::isspace(oline[idx]) ) idx++;
+        if ( oline[idx] == '#' ) comment = true;
+
+        while ( comment ) {
             idx++;
-            lexer(cline, get_headidx());
-
-            cline = "";
+            if ( oline[idx] == '#' ) comment = false;
+            if ( idx >= oline.size() ) return;
         }
 
-        while ( std::isspace(src[idx]) ) {
-            idx++;
-        }
-
-        if ( src[idx] == '#' )
-            comment = true;
-        if ( src[idx] == '"' ) {
-            std::string str = get_all_string(src, idx);
+        if ( oline[idx] == '"' ) {
+            std::string str = get_whole_str(oline, idx);
             cline.append(str);
             idx += str.size();
         }
 
-        while ( comment ) {
-            idx++;
-
-            if ( src[idx] == '#' ) {
-                comment = false;
-            }
-            // it means the comment is in several lines
-            if ( idx > src.size() ) {
-                return;
-            }
-        }
-
-        cline += src[idx];
+        cline += oline[idx];
         idx++;
     }
 
     if ( cline != "#" ) {
-        if ( cline[cline.size() - 1]  != ';' ) {
-            _err_semicolon();
+        if ( cline[cline.size() - 1] != ';' ) {
+            semi_colon_expected();
         }
-        lexer(cline, get_headidx());
+
+        int idxhead = insert_head();
+        lexer(cline, idxhead);
     }
 }
+
+
 
 
 #endif
