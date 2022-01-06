@@ -8,7 +8,11 @@ enum _TokenType {
     KEYWORD,
     NUMBER,
     SEMI_COLON,
-    STRING
+    STRING,
+    VARIABLE, // could be a integer, string or pointer
+    ID,
+    EQUALS_S,
+    MATH_FUNC // To make arithmetic operations
 };
 
 typedef struct TOKEN {

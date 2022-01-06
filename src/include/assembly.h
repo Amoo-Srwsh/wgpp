@@ -2,6 +2,7 @@
 #define WG___ASSEMBLY_H
 
 #include "token.h"
+#include "variables.h"
 
 /* Each label represents a string to be printed, we need give a unique
  * name for each one, so the name will be:
@@ -11,6 +12,11 @@ unsigned int labl_T = 1;
 /* Saves all labels created, it'll help us when there is a label
  * to be printed once or more times */
 std::vector<std::string> labls;
+
+/* We'll save the variables into the satck and each space
+ * in the stack is of 4 bytes, so we need a count to know
+ * in what index we are */
+unsigned int bytes_resb = 4;
 
 // ---------------------- DATA SECTION ------------------------ //
 void start_dataS (FILE* dataS) {
@@ -52,12 +58,35 @@ void _wg_exit_function_by_number (FILE* codeS, std::string code) {
     fprintf(codeS, "\tsyscall\n\n");
 }
 
+void _wg_exit_by_int_variable (FILE* codeS, unsigned int idxStack) {
+    fprintf(codeS, "\tmov $60, %%rax\n");
+    fprintf(codeS, "\tmov -%d(%%rbp), %%rdi\n", idxStack);
+    fprintf(codeS, "\tsyscall\n\n");
+}
+
 void _wg_print_string (FILE* codeS, std::string label) {
     fprintf(codeS, "\tleaq %s(%%rip), %%rax\n", label.c_str());
     fprintf(codeS, "\tmovq %%rax, %%rdi\n");
-    fprintf(codeS, "\tmovl $0, %%eax\n");
-    fprintf(codeS, "\tcall puts@PLT\n");
+    fprintf(codeS, "\tcall printf@PLT\n");
     fprintf(codeS, "\tmovl $0, %%eax\n\n");
+}
+
+void _wg_print_int_variable (FILE* codeS, unsigned int idxStack) {
+    fprintf(codeS, "\tmovl -%d(%%rbp), %%eax\n", idxStack);
+    fprintf(codeS, "\tmov %%eax, %%esi\n");
+    fprintf(codeS, "\tleaq .LPNR(%%rip), %%rax\n");
+    fprintf(codeS, "\tmovq %%rax, %%rdi\n");
+    fprintf(codeS, "\tmovl $0, %%eax\n");
+    fprintf(codeS, "\tcall printf@PLT\n");
+    fprintf(codeS, "\tmovl $0, %%eax\n\n");
+}
+
+void _wg_make_int_variable (FILE* codeS, std::string value, std::string name) {
+    fprintf(codeS, "\tsub $4, %%rsp\n");
+    fprintf(codeS, "\tmovl $%s, -%d(%%rbp)\n\n", value.c_str(), bytes_resb);
+
+    push_variable(bytes_resb, name);
+    bytes_resb += 4;
 }
 
 #endif

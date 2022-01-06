@@ -1,7 +1,7 @@
-print "Hey men, with GNU assembly now!";
-print "Hey men, with GNU assembly now!";
-print "Hey men, with GNU assembly now!";
-print "Hey men, with GNU assembly now!";
-print "Hey men, with GNU assembly now!";
+print "Hey men, with GNU assembly now!\n";
+print "Hey men, with GNU assembly now!\n";
+print "Hey men, with GNU assembly now!\n";
+print "Hey men, with GNU assembly now!\n";
+print "Hey men, with GNU assembly now!\n";
 print "Yeah man\n";
 exit 0;

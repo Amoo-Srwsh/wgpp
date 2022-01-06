@@ -4,6 +4,7 @@
 #include "token.h"
 #include "assembly.h"
 #include "SCH.h"
+#include "variables.h"
 
 int insert_head () {
     thds.push_back( std::vector<token>() );
@@ -34,23 +35,33 @@ void parser () {
 
     for (size_t i = 0; i < thds.size(); ++i) {
         std::vector<token> *currnt = &thds.at(i);
+        print_tokens(currnt);
 
         if ( currnt->at(0).type == KEYWORD && currnt->at(0).value == "exit" ) {
-            if ( chk_exit_by_number(currnt) == 1 ) {
-                _wg_exit_function_by_number(codeS, currnt->at(1).value);
+            if ( chk_exit_by_number(currnt) ) _wg_exit_function_by_number(codeS, currnt->at(1).value);
+            else {
+                unsigned int idxstack_var = get_idx_var(currnt->at(1).value);
+                _wg_exit_by_int_variable(codeS, idxstack_var);
             }
         }
 
         if ( currnt->at(0).type == KEYWORD && currnt->at(0).value == "print" ) {
-            if ( chk_print(currnt) == 1 ) {
+            if ( chk_print(currnt) ) {
                 std::string label = make_string_label(dataS, currnt->at(1).value);
                 _wg_print_string(codeS, label);
             }
+            else {
+                unsigned int idxstack_var = get_idx_var(currnt->at(1).value);
+                _wg_print_int_variable(codeS, idxstack_var);
+            }
         }
 
+        if ( currnt->at(0).type == VARIABLE && currnt->at(0).value == "int" ) {
+            if ( chk_int_declaration(currnt) ) {
+                _wg_make_int_variable(codeS, currnt->at(3).value, currnt->at(1).value);
+            }
+        }
 
-
-        print_tokens(currnt);
     }
 
     fclose(dataS);

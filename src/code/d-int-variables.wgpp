@@ -1,0 +1,12 @@
+int $first$ = 1;
+int $second$ = 2;
+int $third$ = 3;
+int $coderr$ = 0;
+
+print $first$; print "\n";
+print $second$; print "\n";
+print $third$; print "\n";
+
+print "Code error will be: "; print $coderr$; print "\n";
+
+exit $coderr$;

@@ -29,4 +29,21 @@ void no_right_number_arguments () {
     exit(1);
 }
 
+void wrong_name_var () {
+    init_error();
+    printf("$ expected, any variable name must start with a '$' and end with a '$'\n");
+    exit(1);
+}
+
+void var_doesnt_exist (const std::string name) {
+    init_error();
+    printf("%s does not exist as variable\n", name.c_str());
+    exit(1);
+}
+
+void wrong_type_argument () {
+    printf("Wrong argument\n");
+    exit(1);
+}
+
 #endif

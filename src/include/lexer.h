@@ -46,6 +46,21 @@ void lexer (const std::string _final, int idxTKN) {
             idx += str.size() - 1;
             token = "";
         }
+        else if ( token == "int" ) {
+            push_token(idxTKN, VARIABLE, token);
+            token = "";
+        }
+        else if ( token[0] == '$' ) {
+            std::string namevar = get_name_variable(_final, idx);
+            push_token(idxTKN, ID, namevar);
+
+            idx += namevar.size() - 1;
+            token = "";
+        }
+        else if ( token == "=" ) {
+            push_token(idxTKN, EQUALS_S, "=");
+            token = "";
+        }
 
         idx++;
     }

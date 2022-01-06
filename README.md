@@ -9,15 +9,16 @@ Every assembly code will be saved at `./src/out`
 * [x] Ignore comments and whitespaces
 * [x] Print strings
 * [x] Many instructions in one line
+* [x] Intger variables
+* [x] Print integer variables
+* [x] Exit with variable
 
 ## To Do
 * With GNU Assembly
-* Integer variables
-* Print function complete
-* Exit function with variables
 * Arithmetic
+* Check type variables in exit and print functions
 
 ## References
-* [x86_64 assembly](https://en.wikipedia.org/wiki/X86_assembly_language)
+* [x86_64 Assembly](https://en.wikipedia.org/wiki/X86_assembly_language)
 * [Ascii code](https://elcodigoascii.com.ar/)
 * [GNU Assembly](https://es.wikipedia.org/wiki/GNU_Assembler)
