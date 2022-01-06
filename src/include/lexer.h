@@ -56,6 +56,15 @@ void clean_line (const std::string oline) {
     std::string cline = "";
 
     while ( oline[idx] != '\0' ) {
+        if ( oline[idx] == ';' && oline[idx + 1] != '\0' ) {
+            cline += oline[idx];
+            int idxhead = insert_head();
+            lexer(cline, idxhead);
+
+            cline = "";
+            idx++;
+        }
+
         while ( std::isspace(oline[idx]) ) idx++;
         if ( oline[idx] == '#' ) comment = true;
 

@@ -8,16 +8,16 @@ Every assembly code will be saved at `./src/out`
 * [x] Exit function with numbers
 * [x] Ignore comments and whitespaces
 * [x] Print strings
+* [x] Many instructions in one line
 
 ## To Do
 * With GNU Assembly
 * Integer variables
 * Print function complete
-* Many instructions in one line
 * Exit function with variables
 * Arithmetic
 
 ## References
 * [x86_64 assembly](https://en.wikipedia.org/wiki/X86_assembly_language)
 * [Ascii code](https://elcodigoascii.com.ar/)
-
+* [GNU Assembly](https://es.wikipedia.org/wiki/GNU_Assembler)

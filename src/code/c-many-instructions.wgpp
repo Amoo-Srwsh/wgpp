@@ -1,0 +1,1 @@
+print "Many instructions "; print "in on line "; print "does it work? "; print "Sure, it does!!"; exit 0;
