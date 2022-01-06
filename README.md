@@ -15,6 +15,7 @@ Every assembly code will be saved at `./src/out`
 
 ## To Do
 * With GNU Assembly
+* Printf function
 * Arithmetic
 * Check type variables in exit and print functions
 

@@ -1,1 +1,1 @@
-print "Many instructions "; print "in on line "; print "does it work? "; print "Sure, it does!!"; exit 0;
+wout "Many instructions "; wout "in on line "; wout "does it work? "; wout "Sure, it does!!"; exit 0;

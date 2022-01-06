@@ -1,12 +1,14 @@
 int $first$ = 1;
 int $second$ = 2;
-int $third$ = 3;
+int $third$ = -3;
+int $onemore$ = -4;
 int $coderr$ = 0;
 
-print $first$; print "\n";
-print $second$; print "\n";
-print $third$; print "\n";
+wout $first$;
+wout $second$;
+wout $third$;
+wout $onemore$;
 
-print "Code error will be: "; print $coderr$; print "\n";
+wout "Code error will be:"; wout $coderr$;
 
 exit $coderr$;

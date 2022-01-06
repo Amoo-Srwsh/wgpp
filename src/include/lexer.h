@@ -19,7 +19,7 @@ void lexer (const std::string _final, int idxTKN) {
             push_token(idxTKN, SEMI_COLON, token);
             token = "";
         }
-        else if ( token == "print" ) {
+        else if ( token == "wout" ) {
             push_token(idxTKN, KEYWORD, token);
             token = "";
         }

@@ -26,7 +26,7 @@ void start_dataS (FILE* dataS) {
     fprintf(dataS, "\t.type main, @function\n");
 
     fprintf(dataS, "\t.LPNR:\n");
-    fprintf(dataS, "\t\t.string \"%%d\"\n");
+    fprintf(dataS, "\t\t.string \"%%d\\n\"\n");
     fprintf(dataS, "\t\t.text\n");
 }
 
@@ -67,13 +67,13 @@ void _wg_exit_by_int_variable (FILE* codeS, unsigned int idxStack) {
 void _wg_print_string (FILE* codeS, std::string label) {
     fprintf(codeS, "\tleaq %s(%%rip), %%rax\n", label.c_str());
     fprintf(codeS, "\tmovq %%rax, %%rdi\n");
-    fprintf(codeS, "\tcall printf@PLT\n");
+    fprintf(codeS, "\tcall puts@PLT\n");
     fprintf(codeS, "\tmovl $0, %%eax\n\n");
 }
 
 void _wg_print_int_variable (FILE* codeS, unsigned int idxStack) {
     fprintf(codeS, "\tmovl -%d(%%rbp), %%eax\n", idxStack);
-    fprintf(codeS, "\tmov %%eax, %%esi\n");
+    fprintf(codeS, "\tmovl %%eax, %%esi\n");
     fprintf(codeS, "\tleaq .LPNR(%%rip), %%rax\n");
     fprintf(codeS, "\tmovq %%rax, %%rdi\n");
     fprintf(codeS, "\tmovl $0, %%eax\n");
@@ -82,7 +82,7 @@ void _wg_print_int_variable (FILE* codeS, unsigned int idxStack) {
 }
 
 void _wg_make_int_variable (FILE* codeS, std::string value, std::string name) {
-    fprintf(codeS, "\tsub $4, %%rsp\n");
+    fprintf(codeS, "\tsubq $8, %%rsp\n");
     fprintf(codeS, "\tmovl $%s, -%d(%%rbp)\n\n", value.c_str(), bytes_resb);
 
     push_variable(bytes_resb, name);

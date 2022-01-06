@@ -1,7 +1,7 @@
-print "Hey men, with GNU assembly now!\n";
-print "Hey men, with GNU assembly now!\n";
-print "Hey men, with GNU assembly now!\n";
-print "Hey men, with GNU assembly now!\n";
-print "Hey men, with GNU assembly now!\n";
-print "Yeah man\n";
+wout "Hey men, with GNU assembly now!";
+wout "Hey men, with GNU assembly now!";
+wout "Hey men, with GNU assembly now!";
+wout "Hey men, with GNU assembly now!";
+wout "Hey men, with GNU assembly now!";
+wout "Yeah man";
 exit 0;

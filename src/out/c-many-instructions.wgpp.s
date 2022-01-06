@@ -23,25 +23,21 @@ main:
 	movq %rsp, %rbp
 	leaq .LP1(%rip), %rax
 	movq %rax, %rdi
-	movl $0, %eax
 	call puts@PLT
 	movl $0, %eax
 
 	leaq .LP2(%rip), %rax
 	movq %rax, %rdi
-	movl $0, %eax
 	call puts@PLT
 	movl $0, %eax
 
 	leaq .LP3(%rip), %rax
 	movq %rax, %rdi
-	movl $0, %eax
 	call puts@PLT
 	movl $0, %eax
 
 	leaq .LP4(%rip), %rax
 	movq %rax, %rdi
-	movl $0, %eax
 	call puts@PLT
 	movl $0, %eax
 

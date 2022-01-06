@@ -45,7 +45,7 @@ void parser () {
             }
         }
 
-        if ( currnt->at(0).type == KEYWORD && currnt->at(0).value == "print" ) {
+        if ( currnt->at(0).type == KEYWORD && currnt->at(0).value == "wout" ) {
             if ( chk_print(currnt) ) {
                 std::string label = make_string_label(dataS, currnt->at(1).value);
                 _wg_print_string(codeS, label);

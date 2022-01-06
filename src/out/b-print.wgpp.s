@@ -6,10 +6,10 @@
 		.string "%d"
 		.text
 	.LP1:
-		.string "Hey men, with GNU assembly now!\n"
+		.string "Hey men, with GNU assembly now!"
 		.text
 	.LP2:
-		.string "Yeah man\n"
+		.string "Yeah man"
 		.text
 
 main:
@@ -17,32 +17,32 @@ main:
 	movq %rsp, %rbp
 	leaq .LP1(%rip), %rax
 	movq %rax, %rdi
-	call printf@PLT
+	call puts@PLT
 	movl $0, %eax
 
 	leaq .LP1(%rip), %rax
 	movq %rax, %rdi
-	call printf@PLT
+	call puts@PLT
 	movl $0, %eax
 
 	leaq .LP1(%rip), %rax
 	movq %rax, %rdi
-	call printf@PLT
+	call puts@PLT
 	movl $0, %eax
 
 	leaq .LP1(%rip), %rax
 	movq %rax, %rdi
-	call printf@PLT
+	call puts@PLT
 	movl $0, %eax
 
 	leaq .LP1(%rip), %rax
 	movq %rax, %rdi
-	call printf@PLT
+	call puts@PLT
 	movl $0, %eax
 
 	leaq .LP2(%rip), %rax
 	movq %rax, %rdi
-	call printf@PLT
+	call puts@PLT
 	movl $0, %eax
 
 	mov $60, %rax
