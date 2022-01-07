@@ -62,6 +62,13 @@ void parser () {
                 _wg_copy_int_values(codeS, currnt, NUMBER);
             }
         }
+
+        else if ( currnt->at(0).type == KEYWORD && currnt->at(0).value == "printf" ) {
+            chk_printf(currnt);
+            _wg_printf(codeS, currnt->at(1).value, dataS);
+        }
+
+
     }
 
     fclose(dataS);

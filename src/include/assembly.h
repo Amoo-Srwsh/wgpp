@@ -19,6 +19,8 @@ std::vector<std::string> labls;
  * in what index we are */
 unsigned int bytes_resb = 4;
 
+std::string args_r[5] = {"%esi", "%edx", "%ecx", "%r8d", "%r9d"};
+
 // ---------------------- DATA SECTION ------------------------ //
 void start_dataS (FILE* dataS) {
     fprintf(dataS, ".text\n");
@@ -99,6 +101,44 @@ void _wg_copy_int_values (FILE* codeS, std::vector<token> *line, _TokenType t) {
 
     push_variable(bytes_resb, line->at(1).value, t);
     bytes_resb += 4;
+}
+
+void _wg_printf (FILE* codeS, std::string str, FILE* dataS) {
+    std::string lpc = "";
+    std::vector<var> vars_to_print;
+
+    for (size_t i = 0; i < str.size(); ++i) {
+        if ( str[i] == '$' ) {
+            std::string namevar = get_name_variable(str, i);
+            vars_to_print.push_back( *get_variable(namevar) );
+
+            // TODO: print strings too
+            if ( vars_to_print.at(vars_to_print.size() - 1).type_var == NUMBER )
+                lpc.append("%d");
+            i += namevar.size();
+        }
+        lpc += str[i];
+    }
+
+    std::string label = make_string_label(dataS, lpc);
+    if ( vars_to_print.size() >= 6 )
+        no_right_number_arguments();
+
+    for (size_t i = 0; i < vars_to_print.size(); ++i) {
+        fprintf(codeS, "\tmovl -%d(%%rbp), %s\n", vars_to_print.at(i).idxStack, args_r[i].c_str());
+    }
+
+    fprintf(codeS, "\tleaq %s(%%rip), %%rax\n", label.c_str());
+    fprintf(codeS, "\tmovq %%rax, %%rdi\n");
+    fprintf(codeS, "\tmovl $0, %%eax\n");
+    fprintf(codeS, "\tcall printf@PLT\n");
+    fprintf(codeS, "\tmovl $0, %%eax\n");
+
+    fprintf(codeS, "\tmovl $0, %%esi\n");
+    fprintf(codeS, "\tmovl $0, %%ecx\n");
+    fprintf(codeS, "\tmovl $0, %%edx\n");
+    fprintf(codeS, "\tmovl $0, %%r8d\n");
+    fprintf(codeS, "\tmovl $0, %%r9d\n");
 }
 
 #endif

@@ -61,6 +61,10 @@ void lexer (const std::string _final, int idxTKN) {
             push_token(idxTKN, EQUALS_S, "=");
             token = "";
         }
+        else if ( token == "printf" ) {
+            push_token(idxTKN, KEYWORD, token);
+            token = "";
+        }
 
         idx++;
     }

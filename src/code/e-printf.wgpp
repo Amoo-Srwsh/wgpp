@@ -1,0 +1,18 @@
+int $var$ = 16;
+int $var2$ = 17;
+int $var3$ = 18;
+int $var4$ = 19;
+int $var5$ = -23;
+
+printf "$var$ is the value\n";
+printf "$var2$ is a value\n";
+printf "$var3$ is a value\n";
+printf "$var4$ is a value\n";
+printf "$var5$ is a value\n";
+
+wout "";
+
+printf "$var5$ $var4$ $var3$ $var2$ $var$\n";
+printf "$var$ $var2$ $var3$ $var4$ $var5$\n";
+
+exit 0;

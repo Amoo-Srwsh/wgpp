@@ -5,13 +5,13 @@
 " Add on your .vimrc file: autocmd BufRead,BufNewFile *.wgpp set filetype=wgpp
 
 if exists("b:current_syntax")
-  finish
+    finish
 endif
 
 syntax keyword wgppTodos TODO XXX FIXME NOTE
 
 " Language keywords
-syntax keyword wgppKeywords exit print int wout
+syntax keyword wgppKeywords exit wout int printf
 
 " Comments
 syntax region wgppCommentLine start="#" contains=wgppTodos

@@ -29,4 +29,13 @@ unsigned int get_idx_var (std::string name) {
     return -1;
 }
 
+var* get_variable (std::string name) {
+    for (size_t i = 0; i < variables.size(); ++i)
+        if ( variables.at(i).name == name )
+            return &variables.at(i);
+
+    var_doesnt_exist(name);
+    return nullptr;
+}
+
 #endif

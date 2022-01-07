@@ -36,4 +36,9 @@ int chk_int_declaration (std::vector<token> *list) {
     return -1;
 }
 
+void chk_printf (std::vector<token> *list) {
+    if ( list->size() != 3 ) no_right_number_arguments();
+    if ( list->at(1).type != STRING ) wrong_type_argument();
+}
+
 #endif
