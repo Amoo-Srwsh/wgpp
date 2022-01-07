@@ -45,8 +45,8 @@ void parser () {
             }
         }
 
-        if ( currnt->at(0).type == KEYWORD && currnt->at(0).value == "wout" ) {
-            if ( chk_print(currnt) ) {
+        else if ( currnt->at(0).type == KEYWORD && currnt->at(0).value == "wout" ) {
+            if ( chk_wout(currnt) ) {
                 std::string label = make_string_label(dataS, currnt->at(1).value);
                 _wg_print_string(codeS, label);
             }
@@ -56,12 +56,12 @@ void parser () {
             }
         }
 
-        if ( currnt->at(0).type == VARIABLE && currnt->at(0).value == "int" ) {
-            if ( chk_int_declaration(currnt) ) {
-                _wg_make_int_variable(codeS, currnt->at(3).value, currnt->at(1).value);
+        else if ( currnt->at(0).type == VARIABLE && currnt->at(0).value == "int" ) {
+            if ( chk_int_declaration(currnt) ) _wg_make_int_variable(codeS, currnt->at(3).value, currnt->at(1).value, NUMBER);
+            else {
+                _wg_copy_int_values(codeS, currnt, NUMBER);
             }
         }
-
     }
 
     fclose(dataS);

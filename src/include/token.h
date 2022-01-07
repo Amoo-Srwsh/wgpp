@@ -12,7 +12,6 @@ enum _TokenType {
     VARIABLE, // could be a integer, string or pointer
     ID,
     EQUALS_S,
-    MATH_FUNC // To make arithmetic operations
 };
 
 typedef struct TOKEN {

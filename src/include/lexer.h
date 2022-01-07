@@ -4,7 +4,7 @@
 #include "token-func.h"
 #include "helps.h"
 
-/* A comment could be in a several lines, so we need to know
+/* A comment could to be in a several lines, so we need to know
  * if a comment was opened on 1 line and will be closed on N line */
 bool comment = false;
 
@@ -108,8 +108,6 @@ void clean_line (const std::string oline) {
         lexer(cline, idxhead);
     }
 }
-
-
 
 
 #endif

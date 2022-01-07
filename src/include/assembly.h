@@ -3,6 +3,7 @@
 
 #include "token.h"
 #include "variables.h"
+#include "helps.h"
 
 /* Each label represents a string to be printed, we need give a unique
  * name for each one, so the name will be:
@@ -44,7 +45,7 @@ std::string make_string_label (FILE* dataS, const std::string src) {
     return ".LP" + std::to_string(labl_T - 1);
 }
 
-//
+
 // ---------------------- CODE SECTION ------------------------ //
 void start_codeS (FILE *codeS) {
     fprintf(codeS, "\nmain:\n");
@@ -81,11 +82,22 @@ void _wg_print_int_variable (FILE* codeS, unsigned int idxStack) {
     fprintf(codeS, "\tmovl $0, %%eax\n\n");
 }
 
-void _wg_make_int_variable (FILE* codeS, std::string value, std::string name) {
-    fprintf(codeS, "\tsubq $8, %%rsp\n");
+void _wg_make_int_variable (FILE* codeS, std::string value, std::string name, _TokenType t) {
+    fprintf(codeS, "\tsubq $4, %%rsp\n");
     fprintf(codeS, "\tmovl $%s, -%d(%%rbp)\n\n", value.c_str(), bytes_resb);
 
-    push_variable(bytes_resb, name);
+    push_variable(bytes_resb, name, t);
+    bytes_resb += 4;
+}
+
+void _wg_copy_int_values (FILE* codeS, std::vector<token> *line, _TokenType t) {
+    unsigned int idxSvar = get_idx_var(line->at(3).value);
+    fprintf(codeS, "\tsubq $4, %%rsp\n");
+    fprintf(codeS, "\tmovl -%d(%%rbp), %%eax\n", idxSvar);
+    fprintf(codeS, "\tmovl %%eax, -%d(%%rbp)\n", bytes_resb);
+    fprintf(codeS, "\tmovl $0, %%eax\n");
+
+    push_variable(bytes_resb, line->at(1).value, t);
     bytes_resb += 4;
 }
 

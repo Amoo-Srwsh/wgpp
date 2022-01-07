@@ -2,18 +2,20 @@
 #define WG___VARIABLES_H
 
 #include "err-report.h"
-#include <vector>
+#include "token.h"
 
 typedef struct VARIABLE {
     unsigned int idxStack;
     std::string name;
+    _TokenType type_var;
 } var;
 std::vector<var>  variables;
 
-void push_variable (unsigned int idxS, std::string name) {
+void push_variable (unsigned int idxS, std::string name, _TokenType t) {
     var newvar;
     newvar.idxStack = idxS;
     newvar.name = name;
+    newvar.type_var = t;
 
     variables.push_back(newvar);
 }

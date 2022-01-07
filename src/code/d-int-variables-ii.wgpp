@@ -1,0 +1,17 @@
+int $var1$ = 16;
+int $var2$ = $var1$;
+int $var3$ = $var2$;
+int $var4$ = $var3$;
+int $var5$ = $var4$;
+int $var6$ = $var5$;
+int $var7$ = $var6$;
+
+wout $var1$;
+wout $var2$;
+wout $var3$;
+wout $var4$;
+wout $var5$;
+wout $var6$;
+wout $var7$;
+
+exit 0;
