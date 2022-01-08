@@ -4,7 +4,7 @@ This is the continuation of my first ["programming language"](https://github.com
 
 Every assembly code will be saved at `./src/out`
 
-## Difference between `wout` and `printf`
+## Difference between wout and printf
 
 The difference between these functions is that `wout` only can print strings or the value of any variable with a new line at the end, instead `printf` function works like `printf` function in C programming language, you can print strings and values of variables in the same line
 
@@ -17,10 +17,11 @@ The difference between these functions is that `wout` only can print strings or 
 * [x] Print integer variables
 * [x] Exit with variable
 * [x] Printf function
+* [x] Scape characters
 
 ## To Do
 * With GNU Assembly
-* Scape characters in `printf` function
+* Make better error reports
 * Arithmetic
 * Check type variables in exit and print functions
 

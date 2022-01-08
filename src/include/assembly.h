@@ -112,16 +112,23 @@ void _wg_printf (FILE* codeS, std::string str, FILE* dataS) {
             std::string namevar = get_name_variable(str, i);
             vars_to_print.push_back( *get_variable(namevar) );
 
-            // TODO: print strings too
+            // TODO: print strings variables too
             if ( vars_to_print.at(vars_to_print.size() - 1).type_var == NUMBER )
                 lpc.append("%d");
             i += namevar.size();
         }
+
+        if ( str[i] == '%' ) {
+            lpc += str[i];
+            lpc += '%';
+            i++;
+        }
+
         lpc += str[i];
     }
 
     std::string label = make_string_label(dataS, lpc);
-    if ( vars_to_print.size() >= 6 )
+    if ( vars_to_print.size() >= 6 || vars_to_print.size() == 0 )
         no_right_number_arguments();
 
     for (size_t i = 0; i < vars_to_print.size(); ++i) {

@@ -17,6 +17,9 @@
 	.LP4:
 		.string "%d %d %d %d %d\n"
 		.text
+	.LP5:
+		.string "Var: %%s %d\n"
+		.text
 
 main:
 	pushq %rbp
@@ -117,6 +120,17 @@ main:
 	movl -16(%rbp), %r8d
 	movl -20(%rbp), %r9d
 	leaq .LP4(%rip), %rax
+	movq %rax, %rdi
+	movl $0, %eax
+	call printf@PLT
+	movl $0, %eax
+	movl $0, %esi
+	movl $0, %ecx
+	movl $0, %edx
+	movl $0, %r8d
+	movl $0, %r9d
+	movl -4(%rbp), %esi
+	leaq .LP5(%rip), %rax
 	movq %rax, %rdi
 	movl $0, %eax
 	call printf@PLT
