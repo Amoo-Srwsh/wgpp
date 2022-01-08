@@ -1,0 +1,15 @@
+int $x$ = ARITH(5 add 5);
+int $y$ = ARITH($x$ mul $x$ add 16 add 4);
+int $z$ = ARITH($y$ sub $x$);
+int $another$ = ARITH($y$ mod 10);
+int $another2$ = ARITH($x$ div 2);
+int $megaSUB$ = ARITH($x$ sub $y$ sub $z$ sub $another$ sub $another2$);
+
+printf "x variable is equals to $x$\n";
+printf "y variable is equals to $y$\n";
+printf "z variable is equals to $z$\n";
+printf "another variable is equals to $another$\n";
+printf "another2 variable is equals to $another2$\n";
+printf "megaSUB variable is equals to $megaSUB$\n";
+
+exit 0;

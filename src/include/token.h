@@ -15,7 +15,8 @@ enum _TokenType {
     WGPP_FUNC, // functions that belong to wgpp such as: ARITH to make arithmetic
     LEFT_P,
     RIGHT_P,
-    MATH_OPERATOR
+    MATH_OPERATOR,
+    ANY_TYPE_VAR
 };
 
 typedef struct TOKEN {

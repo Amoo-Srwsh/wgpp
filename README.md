@@ -18,11 +18,12 @@ The difference between these functions is that `wout` only can print strings or 
 * [x] Exit with variable
 * [x] Printf function
 * [x] Scape characters
+* [x] Arithmetic
+
 
 ## To Do
 * With GNU Assembly
 * Make better error reports
-* Arithmetic
 * Check type variables in exit and print functions
 * Overwrite variables
 * Change the value of variables

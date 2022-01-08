@@ -29,12 +29,20 @@ unsigned int get_idx_var (std::string name) {
     return -1;
 }
 
-var* get_variable (std::string name) {
-    for (size_t i = 0; i < variables.size(); ++i)
-        if ( variables.at(i).name == name )
-            return &variables.at(i);
+var* get_variable (std::string name, _TokenType type) {
+    var* varet = nullptr;
+    for (size_t i = 0; i < variables.size(); ++i) {
+        if ( variables.at(i).name == name ) {
+            varet = &variables.at(i);
+            break;
+        }
+    }
 
-    var_doesnt_exist(name);
+    if ( varet == nullptr ) var_doesnt_exist(name);
+    if ( type == ANY_TYPE_VAR && varet != nullptr ) return varet;
+    if ( varet->type_var == type ) return varet;
+    if ( varet->type_var != type ) wrong_type_argument();
+
     return nullptr;
 }
 
