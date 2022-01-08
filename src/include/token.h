@@ -12,6 +12,10 @@ enum _TokenType {
     VARIABLE, // could be a integer, string or pointer
     ID,
     EQUALS_S,
+    WGPP_FUNC, // functions that belong to wgpp such as: ARITH to make arithmetic
+    LEFT_P,
+    RIGHT_P,
+    MATH_OPERATOR
 };
 
 typedef struct TOKEN {

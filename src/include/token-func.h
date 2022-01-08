@@ -5,6 +5,8 @@
 #include "assembly.h"
 #include "SCH.h"
 #include "variables.h"
+#include "wg_funcs.h"
+
 
 int insert_head () {
     thds.push_back( std::vector<token>() );
@@ -57,9 +59,13 @@ void parser () {
         }
 
         else if ( currnt->at(0).type == VARIABLE && currnt->at(0).value == "int" ) {
-            if ( chk_int_declaration(currnt) ) _wg_make_int_variable(codeS, currnt->at(3).value, currnt->at(1).value, NUMBER);
-            else {
-                _wg_copy_int_values(codeS, currnt, NUMBER);
+            int how_create_it = chk_int_declaration(currnt);
+
+            if ( how_create_it == 1 ) _wg_make_int_variable(codeS, currnt->at(3).value, currnt->at(1).value, NUMBER);
+            else if ( !how_create_it ) _wg_copy_int_values(codeS, currnt, NUMBER);
+            else if ( how_create_it == 3 ) {
+                std::string value = std::to_string(WG_arith(currnt));
+                _wg_make_int_variable(codeS, value, currnt->at(1).value, NUMBER);
             }
         }
 

@@ -1,0 +1,10 @@
+int $x$ = ARITH(25 add 50 sub 1);
+int $y$ = ARITH(3 add 6 sub 1);
+int $z$ = ARITH(4 pot 5);
+
+wout "Making arithmetic!";
+printf "The value of x variable is: $x$\n";
+printf "The value of y variable is: $y$\n";
+printf "The value of z variable is: $z$\n";
+
+exit 0;

@@ -2,6 +2,7 @@
 #define WG___HELSP_H
 
 #include "err-report.h"
+#include "token.h"
 
 std::string get_whole_num (const std::string src, int from) {
     std::string num = "";

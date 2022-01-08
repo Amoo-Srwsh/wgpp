@@ -15,34 +15,32 @@ void init_error (int lint = line_code) {
 }
 
 void semi_colon_expected () {
-    init_error();
-    for (size_t i = 0; i < content.size() + 3 + std::to_string(line_code).size(); ++i) {
-        printf(" ");
-    }
-    printf("^\n");
+    printf("Semicolon expected\n");
     exit(1);
 }
 
 void no_right_number_arguments () {
-    init_error(line_code - 1);
     printf("No right number of arguments in this line\n");
     exit(1);
 }
 
 void wrong_name_var () {
-    init_error();
     printf("$ expected, any variable name must start with a '$' and end with a '$'\n");
     exit(1);
 }
 
 void var_doesnt_exist (const std::string name) {
-    init_error();
     printf("%s does not exist as variable\n", name.c_str());
     exit(1);
 }
 
 void wrong_type_argument () {
     printf("Wrong argument\n");
+    exit(1);
+}
+
+void token_expected (std::string token) {
+    printf("TOKEN EXPECTED: %s\n", token.c_str());
     exit(1);
 }
 

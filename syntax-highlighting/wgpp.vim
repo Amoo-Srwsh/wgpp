@@ -11,7 +11,7 @@ endif
 syntax keyword wgppTodos TODO XXX FIXME NOTE
 
 " Language keywords
-syntax keyword wgppKeywords exit wout int printf
+syntax keyword wgppKeywords exit wout int printf ARITH sub add div mul pot mod
 
 " Comments
 syntax region wgppCommentLine start="#" contains=wgppTodos

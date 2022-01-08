@@ -12,6 +12,8 @@ void lexer (const std::string _final, int idxTKN) {
     size_t idx = 0;
     std::string token = "";
 
+    // add sub mul div
+
     while ( _final[idx] != '\0' ) {
         token += _final[idx];
 
@@ -63,6 +65,22 @@ void lexer (const std::string _final, int idxTKN) {
         }
         else if ( token == "printf" ) {
             push_token(idxTKN, KEYWORD, token);
+            token = "";
+        }
+        else if ( token == "ARITH" ) {
+            push_token(idxTKN, WGPP_FUNC, token);
+            token = "";
+        }
+        else if ( token == "(" ) {
+            push_token(idxTKN, LEFT_P, token);
+            token = "";
+        }
+        else if ( token == ")" ) {
+            push_token(idxTKN, RIGHT_P, token);
+            token = "";
+        }
+        else if ( token == "add" || token == "mul" || token == "div" || token == "sub" || token == "mod" || token == "pot" ) {
+            push_token(idxTKN, MATH_OPERATOR, token);
             token = "";
         }
 

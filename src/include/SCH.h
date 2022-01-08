@@ -32,6 +32,27 @@ int chk_int_declaration (std::vector<token> *list) {
     if ( list->at(3).type == NUMBER ) return 1;
     if ( list->at(3).type == ID ) return 0;
 
+    if ( list->at(3).type == WGPP_FUNC && list->at(3).value == "ARITH" ) {
+        // int $name$ = ARITH ( math... );
+        if ( list->at(4).type != LEFT_P ) token_expected("Left parenthesis");
+        if ( list->at(list->size() - 2).type != RIGHT_P ) token_expected("Right parenthesis");
+
+        // TODO: Parenthesis into the operation
+        for (size_t i = 5; i < list->size() - 2; ++i) {
+            if ( (i % 2) != 0 && list->at(i).type != NUMBER ) token_expected("NUMBER");
+            if ( !(i % 2) && list->at(i).type != MATH_OPERATOR ) token_expected("MATH_OPERATOR");
+
+            /* If one value is into a variable all proccess must be done by assembly.
+             * If all numbers is not saved into variables the proccess is done by C++ and the value
+             * of the operation is saved into the new variable */
+            if ( (i % 2) != 0 && list->at(i).type == ID ) return 2;
+        }
+
+        return 3;
+    }
+
+    printf("WE WILL FINE\n");
+
     wrong_type_argument();
     return -1;
 }

@@ -131,9 +131,8 @@ void _wg_printf (FILE* codeS, std::string str, FILE* dataS) {
     if ( vars_to_print.size() >= 6 || vars_to_print.size() == 0 )
         no_right_number_arguments();
 
-    for (size_t i = 0; i < vars_to_print.size(); ++i) {
+    for (size_t i = 0; i < vars_to_print.size(); ++i)
         fprintf(codeS, "\tmovl -%d(%%rbp), %s\n", vars_to_print.at(i).idxStack, args_r[i].c_str());
-    }
 
     fprintf(codeS, "\tleaq %s(%%rip), %%rax\n", label.c_str());
     fprintf(codeS, "\tmovq %%rax, %%rdi\n");
@@ -147,5 +146,6 @@ void _wg_printf (FILE* codeS, std::string str, FILE* dataS) {
     fprintf(codeS, "\tmovl $0, %%r8d\n");
     fprintf(codeS, "\tmovl $0, %%r9d\n");
 }
+
 
 #endif
