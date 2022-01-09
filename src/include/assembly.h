@@ -51,6 +51,16 @@ std::string make_string_label (FILE* dataS, const std::string src) {
 
 // ---------------------- CODE SECTION ------------------------ //
 void start_codeS (FILE *codeS) {
+    fprintf(codeS, "pot:\n");
+    fprintf(codeS, "\tcmp %%edi, %%r15d\n");
+    fprintf(codeS, "\tjne pow\n");
+    fprintf(codeS, "\tret\n");
+
+    fprintf(codeS, "pow:\n");
+    fprintf(codeS, "\timul %%r13d, %%edx\n");
+    fprintf(codeS, "\tinc %%r15d\n");
+    fprintf(codeS, "\tjmp pot\n");
+
     fprintf(codeS, "\nmain:\n");
     fprintf(codeS, "\tpushq %%rbp\n");
     fprintf(codeS, "\tmovq %%rsp, %%rbp\n");
@@ -199,6 +209,18 @@ void _wg_write_math (FILE* codeS, std::vector<token> *op) {
                 fprintf(codeS, "\tmov %%eax, %%r14d\n");
             else
                 fprintf(codeS, "\tmov %%edx, %%r14d\n");
+        }
+
+        else if ( op->at(i).value == "pot" ) {
+            fprintf(codeS, "\tmov %%r14d, %%edx\n");
+            fprintf(codeS, "\tmov %%r14d, %%r13d\n");
+            if ( theres_var )
+                fprintf(codeS, "\tmov -%d(%%rbp), %%edi\n", theres_var->idxStack);
+            else
+                fprintf(codeS, "\tmov $%s, %%edi\n", op->at(i + 1).value.c_str());
+            fprintf(codeS, "\tmov $1, %%r15d\n");
+            fprintf(codeS, "\tcall pot\n");
+            fprintf(codeS, "\tmov %%edx, %%r14d\n");
         }
     }
 

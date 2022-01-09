@@ -23,6 +23,17 @@
 	.LP6:
 		.string "megaSUB variable is equals to %d\n"
 		.text
+	.LP7:
+		.string "pot_ variable is equals to %d\n"
+		.text
+pot:
+	cmp %edi, %r15d
+	jne pow
+	ret
+pow:
+	imul %r13d, %edx
+	inc %r15d
+	jmp pot
 
 main:
 	pushq %rbp
@@ -67,6 +78,22 @@ main:
 	sub -20(%rbp), %r14d
 	subq $4, %rsp
 	movl %r14d, -24(%rbp)
+
+	subq $4, %rsp
+	movl $3, -28(%rbp)
+
+#---------------------------------------------------------------------
+	mov $2, %r14d
+	mov %r14d, %edx
+	mov %r14d, %r13d
+	mov -28(%rbp), %edi
+	mov $1, %r15d
+	call pot
+	mov %edx, %r14d
+#---------------------------------------------------------------------
+
+	subq $4, %rsp
+	movl %r14d, -32(%rbp)
 
 	movl -4(%rbp), %esi
 	leaq .LP1(%rip), %rax
@@ -125,6 +152,17 @@ main:
 	movl $0, %r9d
 	movl -24(%rbp), %esi
 	leaq .LP6(%rip), %rax
+	movq %rax, %rdi
+	movl $0, %eax
+	call printf@PLT
+	movl $0, %eax
+	movl $0, %esi
+	movl $0, %ecx
+	movl $0, %edx
+	movl $0, %r8d
+	movl $0, %r9d
+	movl -32(%rbp), %esi
+	leaq .LP7(%rip), %rax
 	movq %rax, %rdi
 	movl $0, %eax
 	call printf@PLT

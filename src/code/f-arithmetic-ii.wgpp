@@ -4,6 +4,8 @@ int $z$ = ARITH($y$ sub $x$);
 int $another$ = ARITH($y$ mod 10);
 int $another2$ = ARITH($x$ div 2);
 int $megaSUB$ = ARITH($x$ sub $y$ sub $z$ sub $another$ sub $another2$);
+int $three$ = 3;
+int $pot_$ = ARITH(2 pot $three$);
 
 printf "x variable is equals to $x$\n";
 printf "y variable is equals to $y$\n";
@@ -11,5 +13,6 @@ printf "z variable is equals to $z$\n";
 printf "another variable is equals to $another$\n";
 printf "another2 variable is equals to $another2$\n";
 printf "megaSUB variable is equals to $megaSUB$\n";
+printf "pot_ variable is equals to $pot_$\n";
 
 exit 0;
