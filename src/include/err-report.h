@@ -9,16 +9,6 @@
 extern std::string content;
 extern int line_code;
 
-void init_error (int lint = line_code) {
-    printf("wgpp: error detected on %d line\n", lint);
-    printf("%d | %s\n", lint, content.c_str());
-}
-
-void semi_colon_expected () {
-    printf("Semicolon expected\n");
-    exit(1);
-}
-
 void no_right_number_arguments () {
     printf("No right number of arguments in this line\n");
     exit(1);
@@ -30,17 +20,23 @@ void wrong_name_var () {
 }
 
 void var_doesnt_exist (const std::string name) {
-    printf("%s does not exist as variable\n", name.c_str());
+    printf("%s was not declared in this scope\n", name.c_str());
     exit(1);
 }
 
 void wrong_type_argument () {
-    printf("Wrong argument\n");
+    printf("Wrong type argument\n");
     exit(1);
 }
 
 void token_expected (std::string token) {
     printf("TOKEN EXPECTED: %s\n", token.c_str());
+    exit(1);
+}
+
+void overwrite_variable (const std::string name) {
+    printf("Trying to overwrite the value of: %s variable\n", name.c_str());
+    printf("If you want to change his value use CHG instruction instead\n");
     exit(1);
 }
 

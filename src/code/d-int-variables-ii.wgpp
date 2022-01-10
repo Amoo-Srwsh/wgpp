@@ -10,8 +10,9 @@ wout $var1$;
 wout $var2$;
 wout $var3$;
 wout $var4$;
-wout $var5$;
-wout $var6$;
-wout $var7$;
+wout $var2$;
+wout $var2$;
+wout $var2$;
+wout $var2$;
 
 exit 0;

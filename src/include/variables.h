@@ -46,4 +46,12 @@ var* get_variable (std::string name, _TokenType type) {
     return nullptr;
 }
 
+var* get_variable_without_throw_error (std::string name, _TokenType type) {
+    for (size_t i = 0; i < variables.size(); ++i)
+        if ( variables.at(i).name == name && variables.at(i).type_var == type )
+            return &variables.at(i);
+
+    return nullptr;
+}
+
 #endif

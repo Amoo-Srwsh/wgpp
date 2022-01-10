@@ -35,6 +35,7 @@ int main (int argc, char* argv[]) {
         printf("%s does not exist\n", argv[1]);
         exit(1);
     }
+
     read(&file, argv[1]);
     return 0;
 }

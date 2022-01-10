@@ -12,8 +12,6 @@ void lexer (const std::string _final, int idxTKN) {
     size_t idx = 0;
     std::string token = "";
 
-    // add sub mul div
-
     while ( _final[idx] != '\0' ) {
         token += _final[idx];
 
@@ -83,6 +81,10 @@ void lexer (const std::string _final, int idxTKN) {
             push_token(idxTKN, MATH_OPERATOR, token);
             token = "";
         }
+        else if ( token == "CHG" ) {
+            push_token(idxTKN, WGPP_FUNC, token);
+            token = "";
+        }
 
         idx++;
     }
@@ -102,8 +104,10 @@ void clean_line (const std::string oline) {
             idx++;
         }
 
-        while ( std::isspace(oline[idx]) ) idx++;
-        if ( oline[idx] == '#' ) comment = true;
+        while ( std::isspace(oline[idx]) )
+            idx++;
+        if ( oline[idx] == '#' )
+            comment = true;
 
         while ( comment ) {
             idx++;
@@ -122,9 +126,8 @@ void clean_line (const std::string oline) {
     }
 
     if ( cline != "#" ) {
-        if ( cline[cline.size() - 1] != ';' ) {
-            semi_colon_expected();
-        }
+        if ( cline[cline.size() - 1] != ';' )
+            token_expected("SEMI COLON");
 
         int idxhead = insert_head();
         lexer(cline, idxhead);

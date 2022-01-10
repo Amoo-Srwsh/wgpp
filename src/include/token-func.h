@@ -2,7 +2,8 @@
 #define WG___TOKEN_FUNC_H
 
 #include "token.h"
-#include "assembly.h"
+#include "assembly-templates.h"
+#include "assembly-generator.h"
 #include "SCH.h"
 #include "variables.h"
 #include "wg_funcs.h"
@@ -32,14 +33,54 @@ void print_tokens (std::vector<token> *current) {
 void parser () {
     FILE *dataS = fopen("data.s", "w");
     FILE *codeS = fopen("code.s", "w");
+
     start_dataS(dataS);
     start_codeS(codeS);
 
-    for (size_t i = 0; i < thds.size(); ++i) {
-        std::vector<token> *currnt = &thds.at(i);
-        print_tokens(currnt);
+    // Start point to linker
+    mke_func_temp("main");
+    size_t currnt_func = get_currnt_tmp();
 
-        if ( currnt->at(0).type == KEYWORD && currnt->at(0).value == "exit" ) {
+    for (size_t i = 0; i < thds.size(); ++i) {
+        std::vector<token> *currntToken = &thds.at(i);
+        temp* currntTemp = get_temp(currnt_func);
+        print_tokens(currntToken);
+
+        if ( currntToken->at(0).type == KEYWORD && currntToken->at(0).value == "exit" ) {
+            char type = chk_exit_by_number(currntToken);
+            if ( type == 'n' )
+                _wg_write_sys_exit_by_number(currntTemp, currntToken);
+            if ( type == 'v' )
+                _wg_write_sys_exit_by_variable(currntTemp, currntToken);
+            if ( type == 'm' )
+                type_arith_call(currntToken, currntTemp);
+        }
+
+        if ( currntToken->at(0).type == KEYWORD && currntToken->at(0).value == "wout" ) {
+            char type = chk_wout(currntToken);
+            if ( type == 's' ) {
+                std::string namelabel = _wg_mke_string_label(dataS, currntToken->at(1).value);
+                _wg_wout_operation_strings(currntTemp, namelabel);
+            }
+            if ( type == 'v' ) {
+                _wg_wout_operation_int_variables(currntTemp, currntToken);
+            }
+        }
+
+        if ( currntToken->at(0).type == VARIABLE && currntToken->at(0).value == "int" ) {
+            char type = chk_int_declaration(currntToken);
+            if ( type == 'n' )
+                _wg_make_int_by_number(currntTemp, currntToken);
+            if ( type == 'v' )
+                _wg_mke_int_by_int(currntTemp, currntToken);
+        }
+
+        if ( currntToken->at(0).type == KEYWORD && currntToken->at(0).value == "printf" ) {
+            chk_printf(currntToken);
+            _wg_printf(currntTemp, currntToken, dataS);
+        }
+
+        /*if ( currnt->at(0).type == KEYWORD && currnt->at(0).value == "exit" ) {
             if ( chk_exit_by_number(currnt) ) _wg_exit_function_by_number(codeS, currnt->at(1).value);
             else {
                 unsigned int idxstack_var = get_idx_var(currnt->at(1).value);
@@ -68,7 +109,7 @@ void parser () {
                 _wg_make_int_variable(codeS, value, currnt->at(1).value);
             }
             else if ( how_create_it == 2 ) {
-                _wg_write_math(codeS, currnt);
+                _wg_make_int_with_arith(codeS, currnt);
             }
         }
 
@@ -77,9 +118,14 @@ void parser () {
             _wg_printf(codeS, currnt->at(1).value, dataS);
         }
 
-
+        else if ( currnt->at(0).type == WGPP_FUNC && currnt->at(0).value == "CHG" ) {
+            char howto = chk_CHG(currnt);
+            if ( howto == 'i' ) _wg_change_int_by_int(codeS, currnt);
+            else if ( howto == 'n' ) _wg_change_int_by_num(codeS, currnt);
+        }*/
     }
 
+    _wg_write_all_templates(codeS);
     fclose(dataS);
     fclose(codeS);
 }
