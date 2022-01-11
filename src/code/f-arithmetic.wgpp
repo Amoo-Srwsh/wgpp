@@ -1,6 +1,13 @@
-int $x$ = 4;
+int $x$ = ARITH(2 add 2);
+int $y$ = ARITH($x$ mul 2);
+int $z$ = ARITH($y$ div $x$);
+int $zyx$ = ARITH($x$ sub $y$ sub $z$);
 
-# There are more, give a few seconds :] #
+printf "X: $x$\n";
+printf "Y: $y$\n";
+printf "Z: $z$\n";
+printf "ZYX: $zyx$\n";
+wout "Random (mod operation):";
+wout ARITH($x$ mod 2);
 
-exit ARITH($x$ pot $x$);
-# exit ARITH(3 add 5 sub 8); ARITH by C type #
+exit ARITH($zyx$ mul -1);

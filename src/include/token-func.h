@@ -65,6 +65,9 @@ void parser () {
             if ( type == 'v' ) {
                 _wg_wout_operation_int_variables(currntTemp, currntToken);
             }
+            if ( type == 'm' ) {
+                type_arith_call(currntToken, currntTemp);
+            }
         }
 
         if ( currntToken->at(0).type == VARIABLE && currntToken->at(0).value == "int" ) {
@@ -73,6 +76,8 @@ void parser () {
                 _wg_make_int_by_number(currntTemp, currntToken);
             if ( type == 'v' )
                 _wg_mke_int_by_int(currntTemp, currntToken);
+            if ( type == 'm' )
+                type_arith_call(currntToken, currntTemp);
         }
 
         if ( currntToken->at(0).type == KEYWORD && currntToken->at(0).value == "printf" ) {
@@ -80,49 +85,15 @@ void parser () {
             _wg_printf(currntTemp, currntToken, dataS);
         }
 
-        /*if ( currnt->at(0).type == KEYWORD && currnt->at(0).value == "exit" ) {
-            if ( chk_exit_by_number(currnt) ) _wg_exit_function_by_number(codeS, currnt->at(1).value);
-            else {
-                unsigned int idxstack_var = get_idx_var(currnt->at(1).value);
-                _wg_exit_by_int_variable(codeS, idxstack_var);
-            }
+        if ( currntToken->at(0).type == WGPP_FUNC && currntToken->at(0).value == "CHG" ) {
+            char type = chk_chg(currntToken);
+            if ( type == 'n' )
+                _wg_chg_int_by_number(currntTemp, currntToken);
+            if ( type == 'v' )
+                _wg_chg_int_by_int(currntTemp, currntToken);
+            if ( type == 'm' )
+                type_arith_call(currntToken, currntTemp);
         }
-
-        else if ( currnt->at(0).type == KEYWORD && currnt->at(0).value == "wout" ) {
-            if ( chk_wout(currnt) ) {
-                std::string label = make_string_label(dataS, currnt->at(1).value);
-                _wg_print_string(codeS, label);
-            }
-            else {
-                unsigned int idxstack_var = get_idx_var(currnt->at(1).value);
-                _wg_print_int_variable(codeS, idxstack_var);
-            }
-        }
-
-        else if ( currnt->at(0).type == VARIABLE && currnt->at(0).value == "int" ) {
-            int how_create_it = chk_int_declaration(currnt);
-
-            if ( how_create_it == 1 ) _wg_make_int_variable(codeS, currnt->at(3).value, currnt->at(1).value);
-            else if ( !how_create_it ) _wg_copy_int_var_definition (codeS, currnt);
-            else if ( how_create_it == 3 ) {
-                std::string value = std::to_string(WG_arith(currnt));
-                _wg_make_int_variable(codeS, value, currnt->at(1).value);
-            }
-            else if ( how_create_it == 2 ) {
-                _wg_make_int_with_arith(codeS, currnt);
-            }
-        }
-
-        else if ( currnt->at(0).type == KEYWORD && currnt->at(0).value == "printf" ) {
-            chk_printf(currnt);
-            _wg_printf(codeS, currnt->at(1).value, dataS);
-        }
-
-        else if ( currnt->at(0).type == WGPP_FUNC && currnt->at(0).value == "CHG" ) {
-            char howto = chk_CHG(currnt);
-            if ( howto == 'i' ) _wg_change_int_by_int(codeS, currnt);
-            else if ( howto == 'n' ) _wg_change_int_by_num(codeS, currnt);
-        }*/
     }
 
     _wg_write_all_templates(codeS);

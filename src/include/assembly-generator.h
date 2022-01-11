@@ -19,6 +19,12 @@ void start_dataS (FILE *dataS) {
     fprintf(dataS, "\t.LPNR:\n");
     fprintf(dataS, "\t\t.string \"%%d\\n\"\n");
     fprintf(dataS, "\t\t.text\n\n");
+
+    fprintf(dataS, "\t.data\n");
+    fprintf(dataS, "\t.type .auxINT, @object\n");
+    fprintf(dataS, "\t.auxINT:\n");
+    fprintf(dataS, "\t\t.long 0\n");
+    fprintf(dataS, "\t\t.text\n\n");
 }
 
 std::string _wg_mke_string_label (FILE* dataS, std::string src) {
@@ -37,12 +43,12 @@ std::string _wg_mke_string_label (FILE* dataS, std::string src) {
 
 void start_codeS (FILE *codeS) {
     fprintf(codeS, "powM:\n");
-    fprintf(codeS, "\tcmp %%rdi, %%r15\n");
+    fprintf(codeS, "\tcmpl %%edi, %%r15d\n");
     fprintf(codeS, "\tjne powH\n");
     fprintf(codeS, "\tret\n");
     fprintf(codeS, "powH:\n");
-    fprintf(codeS, "\timul %%r13, %%rdx\n");
-    fprintf(codeS, "\tinc %%r15\n");
+    fprintf(codeS, "\timul %%r13d, %%edx\n");
+    fprintf(codeS, "\tincl %%r15d\n");
     fprintf(codeS, "\tjmp powM\n\n");
 }
 
@@ -52,10 +58,10 @@ void _static_make_math_ (temp *_temp, std::vector<token> *op) {
      * on %r14d register (64 bits)*/
     if ( op->at(2).type == ID ) {
         unsigned int posStack = get_variable(op->at(2).value, NUMBER)->idxStack;
-        _temp->code_ins += "\tmov -" + std::to_string(posStack) + "(%rbp), %r14\n";
+        _temp->code_ins += "\tmovl -" + std::to_string(posStack) + "(%rbp), %r14d\n";
     }
     else
-        _temp->code_ins += "\tmov $" + op->at(2).value + ", %t14\n";
+        _temp->code_ins += "\tmovl $" + op->at(2).value + ", %r14d\n";
 
     /* i variable will point to the first mathematical operator:
      * op vector = { ARITH, (, N/V, MATH_OP, N/V, MATH_OP, ..., ) }
@@ -75,50 +81,50 @@ void _static_make_math_ (temp *_temp, std::vector<token> *op) {
 
         if ( op->at(i).value == "add" ) {
             if ( poStackCurrntVar )
-                _temp->code_ins += "\tadd -" + std::to_string(poStackCurrntVar) + "(%rbp), " + "%r14d\n";
+                _temp->code_ins += "\taddl -" + std::to_string(poStackCurrntVar) + "(%rbp), " + "%r14d\n";
             else
-                _temp->code_ins += "\tadd $" + op->at(i + 1).value + ", %r14\n";
+                _temp->code_ins += "\taddl $" + op->at(i + 1).value + ", %r14d\n";
         }
 
         if ( op->at(i).value == "sub" ) {
             if ( poStackCurrntVar )
-                _temp->code_ins += "\tsub -" + std::to_string(poStackCurrntVar) + "(%rbp), " + "%r14d\n";
+                _temp->code_ins += "\tsubl -" + std::to_string(poStackCurrntVar) + "(%rbp), " + "%r14d\n";
             else
-                _temp->code_ins += "\tsub $" + op->at(i + 1).value + ", %r14\n";
+                _temp->code_ins += "\tsubl $" + op->at(i + 1).value + ", %r14d\n";
         }
 
         if ( op->at(i).value == "mul" ) {
             if ( poStackCurrntVar )
-                _temp->code_ins += "\timul -" + std::to_string(poStackCurrntVar) + "(%rbp), " + "%r14d\n";
+                _temp->code_ins += "\timull -" + std::to_string(poStackCurrntVar) + "(%rbp), " + "%r14d\n";
             else
-                _temp->code_ins += "\timul $" + op->at(i + 1).value + ", %r14\n";
+                _temp->code_ins += "\timull $" + op->at(i + 1).value + ", %r14d\n";
         }
 
         if ( op->at(i).value == "div" || op->at(i).value == "mod" ) {
-            _temp->code_ins += "\tmov $0, %rdx\n"
-                               "\tmov %r14, %rax\n";
+            _temp->code_ins += "\tmovl $0, %edx\n"
+                               "\tmovl %r14d, %eax\n";
             if ( poStackCurrntVar )
-                _temp->code_ins += "\tmov -" + std::to_string(poStackCurrntVar) + "(%rbp), %rcx\n";
+                _temp->code_ins += "\tmovl -" + std::to_string(poStackCurrntVar) + "(%rbp), %ecx\n";
             else
-                _temp->code_ins += "\tmov $" + op->at(i + 1).value + ", %rcx\n";
+                _temp->code_ins += "\tmovl $" + op->at(i + 1).value + ", %ecx\n";
 
-            _temp->code_ins += "\tdiv %rcx\n";
+            _temp->code_ins += "\tdivl %ecx\n";
             if ( op->at(i).value == "div" )
-                _temp->code_ins += "\tmov %rax, %r14\n";
+                _temp->code_ins += "\tmovl %eax, %r14d\n";
             else
-                _temp->code_ins += "\tmov %rdx, %r14\n";
+                _temp->code_ins += "\tmovl %edx, %r14d\n";
         }
 
         if ( op->at(i).value == "pot" ) {
-            _temp->code_ins += "\tmov %r14, %rdx\n";
-            _temp->code_ins += "\tmov %r14, %r13\n";
+            _temp->code_ins += "\tmovl %r14d, %edx\n";
+            _temp->code_ins += "\tmovl %r14d, %r13d\n";
             if ( poStackCurrntVar )
-                _temp->code_ins += "\tmov -" + std::to_string(poStackCurrntVar) + "(%rbp), %rdi\n";
+                _temp->code_ins += "\tmovl -" + std::to_string(poStackCurrntVar) + "(%rbp), %edi\n";
             else
                 _temp->code_ins += "\tmov $" + op->at(i + 1).value + ", %rdi\n";
-            _temp->code_ins += "\tmov $1, %r15\n"
+            _temp->code_ins += "\tmovl $1, %r15d\n"
                                "\tcall powM\n"
-                               "\tmov %rdx, %r14\n";
+                               "\tmovl %edx, %r14d\n";
         }
     }
     _temp->code_ins += "\n";
@@ -128,8 +134,8 @@ void _wg_write_sys_exit_by_number (temp *_temp, std::vector<token> *list) {
     /* EXIT BY NUMBER (WG++)
      * code = exit 0;
      * list = {KEYWORD, NUMBER, SEMICOLON} */
-    _temp->code_ins += "\tmov $60, %rax\n"
-                       "\tmov $" + list->at(1).value + ", %rdi\n"
+    _temp->code_ins += "\tmovq $60, %rax\n"
+                       "\tmovq $" + list->at(1).value + ", %rdi\n"
                        "\tsyscall\n\n";
 }
 
@@ -138,8 +144,8 @@ void _wg_write_sys_exit_by_variable (temp *_temp, std::vector<token> *list) {
      * code = exit $variable$;
      * list = {KEYWORD, ID, SEMICOLON} */
     unsigned int idx = get_variable(list->at(1).value, NUMBER)->idxStack;
-    _temp->code_ins += "\tmov $60, %rax\n"
-                       "\tmov -" + std::to_string(idx) + "(%rbp), %rdi\n"
+    _temp->code_ins += "\tmovq $60, %rax\n"
+                       "\tmovq -" + std::to_string(idx) + "(%rbp), %rdi\n"
                        "\tsyscall\n\n";
 }
 
@@ -147,8 +153,8 @@ void _wg_write_sys_exit_by_math_typeC (temp *_temp, int value) {
     /* EXIT BY MATH (WG++)
      * code = exit ARITH(4 add 5);
      * you can see the documentation on: ./wg_funcs.h :: void type_arith() */
-    _temp->code_ins += "\tmov $60, %rax\n"
-                       "\tmov $" + std::to_string(value) + ", %rdi\n"
+    _temp->code_ins += "\tmovq $60, %rax\n"
+                       "\tmovq $" + std::to_string(value) + ", %rdi\n"
                        "\tsyscall\n";
 }
 
@@ -157,9 +163,11 @@ void _wg_write_sys_exit_by_math_typeA (temp *_temp, std::vector<token> *op) {
      * code = exit ARITH($variable$ add 5);
      * you can see the documentation on: ./wg_funcs.h :: void type_arith() */
     _static_make_math_(_temp, op);
-    _temp->code_ins += "\tmov $60, %rax\n"
-                       "\tmov %r14, %rdi\n"
-                       "\tsyscall\n\n";
+    _temp->code_ins += "\tmovl %r14d, .auxINT(%rip)\n"
+                       "\tmovq $60, %rax\n"
+                       "\tmovq .auxINT(%rip), %rdi\n"
+                       "\tsyscall\n"
+                       "\tmovl $0, .auxINT(%rip)\n\n";
 }
 
 void _wg_wout_operation_strings (temp *_temp, std::string name_label) {
@@ -187,6 +195,31 @@ void _wg_wout_operation_int_variables (temp *_temp, std::vector<token> *list) {
                        "\tmovl $0, %eax\n\n" ;
 }
 
+void _wg_wout_operation_math_typeC (temp *_temp, int value) {
+    /* WOUT MATH (WG++)
+     * code = wout ARITH(4 sub 4 add 4); */
+    _temp->code_ins += "\tmovl $" + std::to_string(value) + ", %eax\n"
+                       "\tmovl %eax, %esi\n"
+                       "\tleaq .LPNR(%rip), %rax\n"
+                       "\tmovq %rax, %rdi\n"
+                       "\tmovl $0, %eax\n"
+                       "\tcall printf@PLT\n"
+                       "\tmovl $0, %eax\n\n";
+}
+
+void _wg_wout_operation_math_typeA (temp *_temp, std::vector<token> *op) {
+    /* WOUT MATH (WG++)
+     * code = wout ARITH(4 sub 4 add $variable$); */
+    _static_make_math_(_temp, op);
+    _temp->code_ins += "\tmovl %r14d, %eax\n"
+                       "\tmovl %eax, %esi\n"
+                       "\tleaq .LPNR(%rip), %rax\n"
+                       "\tmovq %rax, %rdi\n"
+                       "\tmovl $0, %eax\n"
+                       "\tcall printf@PLT\n"
+                       "\tmovl $0, %eax\n\n";
+}
+
 void _wg_make_int_by_number (temp *_temp, std::vector<token> *list) {
     /* Make int by one number (WG++)
      * code = int $namevariable$ = 4;
@@ -212,6 +245,29 @@ void _wg_mke_int_by_int (temp *_temp, std::vector<token> *list) {
     _temp->bytes_resb += 4;
 }
 
+void _wg_mke_int_by_math_typeC (temp* _temp, int value, std::string name) {
+    /* INT MATH (WG++)
+     * code = int $x$ = ARITH(4 add 5); */
+    _temp->code_ins += "\tsubq $4, %rsp\n"
+                       "\tmovl $" + std::to_string(value) + ", -" +
+                       std::to_string(_temp->bytes_resb) + "(%rbp)\n\n";
+
+    push_variable(_temp->bytes_resb, name, NUMBER);
+    _temp->bytes_resb += 4;
+}
+
+void _wg_mke_int_by_math_typeA (temp *_temp, std::vector<token> *op, std::string name) {
+    /* INT MATH (WG++)
+     * code = int $x$ = 4;
+     *        int $y$ = ARITH($x$ mod 2); */
+    _static_make_math_(_temp, op);
+    _temp->code_ins += "\tsubq $4, %rsp\n"
+                       "\tmovl %r14d, -" + std::to_string(_temp->bytes_resb) + "(%rbp)\n\n";
+
+    push_variable(_temp->bytes_resb, name, NUMBER);
+    _temp->bytes_resb += 4;
+}
+
 void _wg_printf (temp *_temp, std::vector<token> *list, FILE* dataS) {
     /* Printf function (by GCC with the style of GW++)
      * code = printf "$anyvariable$ text $anothervariable$";
@@ -225,7 +281,7 @@ void _wg_printf (temp *_temp, std::vector<token> *list, FILE* dataS) {
             std::string namevariable = get_name_variable(strprintf, i);
             var* thisvar = get_variable(namevariable, ANY_TYPE_VAR);
 
-            // TODO: Make it with another type variables too
+            // TODO: Make it with strings and pointers when are already
             args.push_back( std::to_string(thisvar->idxStack) );
             if ( thisvar->type_var == NUMBER )
                 label_to_print += "%d";
@@ -262,6 +318,53 @@ void _wg_printf (temp *_temp, std::vector<token> *list, FILE* dataS) {
     _temp->code_ins += "\n";
 }
 
+void _wg_chg_int_by_number (temp* _temp, std::vector<token> *list) {
+    /* CHG (WG++)
+     * code = int $v$ = 4;
+     *        CHG $v$ 6;
+     * list = {WGPP_FUNC, ID, NUMBER}
+     * Works to change the value of one variale */
+    var* variable = get_variable(list->at(1).value, NUMBER);
+    _temp->code_ins += "\tmovl $" + list->at(2).value + ", %eax\n"
+                       "\tmovl %eax, -" + std::to_string(variable->idxStack) + "(%rbp)\n\n";
+}
+
+void _wg_chg_int_by_int (temp *_temp, std::vector<token> *list) {
+    /* CHG (WG++)
+     * code = int $v$ = 4;
+     *        int $vv$ = 5;
+     *        CHG $v$ $vv$;
+     * list = {WGPP_FUNC, ID, NUMBER}
+     * Works to change the value of one variale */
+    var* v1 = get_variable(list->at(1).value, NUMBER);
+    var* v2 = get_variable(list->at(2).value, NUMBER);
+
+    _temp->code_ins += "\tmovl -" + std::to_string(v2->idxStack) + "(%rbp), %eax\n"
+                       "\tmovl %eax, -" + std::to_string(v1->idxStack) + "(%rbp)\n\n";
+}
+
+void _wg_chg_int_by_math_typeC (temp* _temp, int value, std::string namev) {
+    /* CHG (WG++)
+     * code = int $v$ = 4;
+     *        CHG $v$ ARITH(4 sub 45);
+     * Works to change the value of one variale */
+    var* variable = get_variable(namev, NUMBER);
+    _temp->code_ins += "\tmovl $" + std::to_string(value) + ", %eax\n"
+                       "\tmovl %eax, -" + std::to_string(variable->idxStack) + "(%rbp)\n\n";
+}
+
+void _wg_chg_int_by_math_typeA (temp* _temp, std::vector<token> *op, std::string namev) {
+    /* CHG (WG++)
+     * code = int $v$ = 4;
+     *        CHG $v$ ARITH(4 sub $v$);
+     * Works to change the value of one variale */
+    var* variable = get_variable(namev, NUMBER);
+    _static_make_math_(_temp, op);
+
+    _temp->code_ins += "#-----------------------#\n\tmovl %r14d, %eax\n"
+                       "\tmovl %eax, -" + std::to_string(variable->idxStack) + "(%rbp)\n\n";
+}
+
 void _wg_write_all_templates (FILE *codeS) {
     for (size_t i = 0; i < templs.size(); ++i) {
         fprintf(codeS, templs.at(i).temp_val.c_str(), templs.at(i).code_ins.c_str());
@@ -269,196 +372,3 @@ void _wg_write_all_templates (FILE *codeS) {
 }
 
 #endif
-
-/*
-unsigned int bytes_resb = 4;
-
-// ---------------------- DATA SECTION ------------------------ //
-void start_dataS (FILE* dataS) {
-    fprintf(dataS, ".text\n");
-    fprintf(dataS, ".section .rodata\n");
-    fprintf(dataS, "\t.globl main\n");
-    fprintf(dataS, "\t.type main, @function\n");
-
-    fprintf(dataS, "\t.LPNR:\n");
-}
-
-std::string make_string_label (FILE* dataS, const std::string src) {
-    for (size_t i = 0; i < string_labls.size(); ++i)
-        if ( string_labls.at(i) == src )
-            return ".LP" + std::to_string(i + 1);
-
-    fprintf(dataS, "\t.LP%d:\n", labl_T);
-    fprintf(dataS, "\t\t.string %s\n", src.c_str());
-    fprintf(dataS, "\t\t.text\n");
-
-    labl_T++;
-    string_labls.push_back(src);
-    return ".LP" + std::to_string(labl_T - 1);
-}
-
-
-// ---------------------- CODE SECTION ------------------------ //
-void start_codeS (FILE *codeS) {
-        fprintf(codeS, "\nmain:\n");
-    fprintf(codeS, "\tpushq %%rbp\n");
-    fprintf(codeS, "\tmovq %%rsp, %%rbp\n");
-
-}
-
-void _wg_exit_function_by_number (FILE* codeS, std::string code) {
-    fprintf(codeS, "\tmov $60, %%rax\n");
-    fprintf(codeS, "\tmov $%s, %%rdi\n", code.c_str());
-    fprintf(codeS, "\tsyscall\n\n");
-}
-
-void _wg_exit_by_int_variable (FILE* codeS, unsigned int idxStack) {
-    fprintf(codeS, "\tmov $60, %%rax\n");
-    fprintf(codeS, "\tmov -%d(%%rbp), %%rdi\n", idxStack);
-    fprintf(codeS, "\tsyscall\n\n");
-}
-
-void _wg_print_string (FILE* codeS, std::string label) {
-
-}
-
-void _wg_print_int_variable (FILE* codeS, unsigned int idxStack) {
-
-}
-
-void _wg_make_int_variable (FILE* codeS, std::string value, std::string name) {
-    fprintf(codeS, "\tsubq $4, %%rsp\n");
-    fprintf(codeS, "\tmovl $%s, -%d(%%rbp)\n\n", value.c_str(), bytes_resb);
-
-    push_variable(bytes_resb, name, NUMBER);
-    bytes_resb += 4;
-}
-
-void _wg_copy_int_var_definition (FILE* codeS, std::vector<token> *line) {
-    unsigned int idxSvar = get_idx_var(line->at(3).value);
-    fprintf(codeS, "\tsubq $4, %%rsp\n");
-    fprintf(codeS, "\tmovl -%d(%%rbp), %%eax\n", idxSvar);
-    fprintf(codeS, "\tmovl %%eax, -%d(%%rbp)\n", bytes_resb);
-    fprintf(codeS, "\tmovl $0, %%eax\n");
-
-    push_variable(bytes_resb, line->at(1).value, NUMBER);
-    bytes_resb += 4;
-}
-
-void _wg_printf (FILE* codeS, std::string str, FILE* dataS) {
-    std::string lpc = "";
-    std::vector<var> vars_to_print;
-
-    for (size_t i = 0; i < str.size(); ++i) {
-        if ( str[i] == '$' ) {
-            std::string namevar = get_name_variable(str, i);
-            vars_to_print.push_back( *get_variable(namevar, ANY_TYPE_VAR) );
-
-
-            // TODO: print strings variables too
-            if ( vars_to_print.at(vars_to_print.size() - 1).type_var == NUMBER )
-                lpc.append("%d");
-            i += namevar.size();
-        }
-
-        if ( str[i] == '%' ) {
-            lpc += str[i];
-            lpc += '%';
-            i++;
-        }
-
-        lpc += str[i];
-    }
-
-    std::string label = make_string_label(dataS, lpc);
-    if ( vars_to_print.size() >= 6 || vars_to_print.size() == 0 )
-        no_right_number_arguments();
-
-    for (size_t i = 0; i < vars_to_print.size(); ++i)
-        fprintf(codeS, "\tmovl -%d(%%rbp), %s\n", vars_to_print.at(i).idxStack, args_r[i].c_str());
-
-        fprintf(codeS, "\tmovl $0, %%esi\n");
-    fprintf(codeS, "\tmovl $0, %%ecx\n");
-    fprintf(codeS, "\tmovl $0, %%edx\n");
-    fprintf(codeS, "\tmovl $0, %%r8d\n");
-    fprintf(codeS, "\tmovl $0, %%r9d\n");
-
-}
-
-void _wg_write_math_STATIC (FILE* codeS, std::vector<token> *op) {
-    if ( op->at(0).type == ID ) {
-        var*fv = get_variable(op->at(0).value, NUMBER);
-        fprintf(codeS, "\tmov -%d(%%rbp), %%r14d\n", fv->idxStack );
-    }
-    else fprintf(codeS, "\tmov $%s, %%r14d\n", op->at(0).value.c_str());
-
-    for (size_t i = 1; op->at(i).type != RIGHT_P; i += 2) {
-        var* theres_var = nullptr;
-        if ( op->at(i + 1).type == ID ) {
-            theres_var = get_variable(op->at(i + 1).value, NUMBER);
-        }
-
-        if ( op->at(i).value == "mul" ) {
-            if ( theres_var == nullptr )
-                fprintf(codeS, "\timul $%s, %%r14d\n", op->at(i + 1).value.c_str());
-            else
-                fprintf(codeS, "\timul -%d(%%rbp), %%r14d\n", theres_var->idxStack);
-        }
-
-        else if ( op->at(i).value == "add" ) {
-            if ( theres_var == nullptr )
-                fprintf(codeS, "\tadd $%s, %%r14d\n", op->at(i + 1).value.c_str());
-            else
-                fprintf(codeS, "\tadd -%d(%%rbp), %%r14d\n", theres_var->idxStack);
-        }
-
-        else if ( op->at(i).value == "sub" ) {
-            if ( theres_var == nullptr )
-                fprintf(codeS, "\tsub $%s, %%r14d\n", op->at(i + 1).value.c_str());
-            else
-                fprintf(codeS, "\tsub -%d(%%rbp), %%r14d\n", theres_var->idxStack);
-        }
-        
-        else if ( op->at(i).value == "div" || op->at(i).value == "mod" ) {
-
-                    }
-
-        else if ( op->at(i).value == "pot" ) {
-
-        }
-    }
-}
-
-void _wg_make_int_with_arith (FILE* codeS, std::vector<token> *list)  {
-    std::vector<token> operation { list->begin() + 5, list->end() - 1 };
-    _wg_write_math_STATIC(codeS, &operation);
-
-    fprintf(codeS, "\tsubq $4, %%rsp\n");
-    fprintf(codeS, "\tmovl %%r14d, -%d(%%rbp)\n\n", bytes_resb);
-
-    push_variable(bytes_resb, list->at(1).value, NUMBER);
-    bytes_resb += 4;
-}
-
-void _wg_change_int_by_int (FILE* codeS, std::vector<token> *list) {
-    var *fv = get_variable(list->at(1).value, NUMBER);
-    var *sv = get_variable(list->at(2).value, NUMBER);
-    fprintf(codeS, "\tmov -%d(%%rbp), %%rax\n", sv->idxStack);
-    fprintf(codeS, "\tmov %%rax, -%d(%%rbp)\n", fv->idxStack);
-    fprintf(codeS, "\tmov $0, %%rax\n");
-}
-
-void _wg_change_int_by_num (FILE* codeS, std::vector<token> *list) {
-    var *fv = get_variable(list->at(1).value, NUMBER);
-    fprintf(codeS, "\tmovl $%s, -%d(%%rbp)\n", list->at(2).value.c_str(), fv->idxStack);
-}
-
-void _wg_change_int_by_math (FILE* codeS, std::vector<token> *list) {
-    // CHG 
-    std::vector<token> operation { list->begin() + 4, list->end() - 1 };
-    _wg_write_math_STATIC(codeS, &operation);
-
-    var* fv = get_variable(list->at(1).value, NUMBER);
-    fprintf(codeS, "\tmov %%r14d, -%d(%%rbp)\n",fv->idxStack);
-}
-*/

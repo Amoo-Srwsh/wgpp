@@ -1,0 +1,26 @@
+int $first$ = 4;
+int $second$ = $first$;
+
+wout $first$;
+
+# ------------ #
+CHG $first$ 5;
+wout $first$;
+# ------------ #
+
+# ------------ #
+CHG $first$ $second$;
+wout $first$;
+# ------------ #
+
+# ------------ #
+CHG $first$ ARITH(2 mod 2);
+wout $first$;
+# ------------ #
+
+# ------------ #
+CHG $first$ ARITH($first$ sub 4);
+wout $first$;
+# ------------ #
+
+exit 0;

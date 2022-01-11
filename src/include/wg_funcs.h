@@ -50,11 +50,11 @@ void type_arith_call (std::vector<token> *list, temp* _temp) {
     }
 
     std::vector<token> op = { list->begin() + idxArithToken, list->begin() + idxArithToken + idxRparnToken };
-    for (size_t i = 2; i < op.size() - 1; ++i) {
+    for (size_t i = 2; op.at(i).value != ")"; ++i) {
         if ( !(i % 2) && ( op.at(i).type != NUMBER && op.at(i).type != ID ) )
             token_expected("NUMBER OR INTEGER VARIABLE");
 
-        if ( (i % 2) && op.at(i).type != MATH_OPERATOR )
+        else if ( (i % 2) && op.at(i).type != MATH_OPERATOR )
             token_expected("MATH OPERATOR");
 
         if ( op.at(i).type == ID ) {
@@ -65,10 +65,25 @@ void type_arith_call (std::vector<token> *list, temp* _temp) {
 
     if ( arith_type == 'c' ) {
         int result = WG_arith(&op);
-        _wg_write_sys_exit_by_math_typeC(_temp, result);
+        if ( list->at(0).value == "exit" )
+            _wg_write_sys_exit_by_math_typeC(_temp, result);
+        if ( list->at(0).value == "wout" )
+            _wg_wout_operation_math_typeC(_temp, result);
+        if ( list->at(0).value == "int" )
+            _wg_mke_int_by_math_typeC(_temp, result, list->at(1).value);
+        if ( list->at(0).value == "CHG" )
+            _wg_chg_int_by_math_typeC(_temp, result, list->at(1).value);
     }
+
     else {
-        _wg_write_sys_exit_by_math_typeA(_temp, &op);
+        if ( list->at(0).value == "exit" )
+            _wg_write_sys_exit_by_math_typeA(_temp, &op);
+        if ( list->at(0).value == "wout" )
+            _wg_wout_operation_math_typeA(_temp, &op);
+        if ( list->at(0).value == "int" )
+            _wg_mke_int_by_math_typeA(_temp, &op, list->at(1).value);
+        if ( list->at(0).value == "CHG" )
+            _wg_chg_int_by_math_typeA(_temp, &op, list->at(1).value);
     }
 }
 

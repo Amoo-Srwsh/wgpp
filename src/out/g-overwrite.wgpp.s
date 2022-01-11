@@ -13,10 +13,6 @@
 		.long 0
 		.text
 
-	.LP1:
-		.string "Code error will be:"
-		.text
-
 powM:
 	cmpl %edi, %r15d
 	jne powH
@@ -31,19 +27,22 @@ main:
 	movq    %rsp, %rbp
 
 	subq $4, %rsp
-	movl $1, -4(%rbp)
+	movl $4, -4(%rbp)
 
 	subq $4, %rsp
-	movl $2, -8(%rbp)
+	movl -4(%rbp), %eax
+	movl %eax, -8(%rbp)
 
-	subq $4, %rsp
-	movl $-3, -12(%rbp)
+	movl -4(%rbp), %eax
+	movl %eax, %esi
+	leaq .LPNR(%rip), %rax
+	movq %rax, %rdi
+	movl $0, %eax
+	call printf@PLT
+	movl $0, %eax
 
-	subq $4, %rsp
-	movl $-4, -16(%rbp)
-
-	subq $4, %rsp
-	movl $0, -20(%rbp)
+	movl $5, %eax
+	movl %eax, -4(%rbp)
 
 	movl -4(%rbp), %eax
 	movl %eax, %esi
@@ -54,6 +53,9 @@ main:
 	movl $0, %eax
 
 	movl -8(%rbp), %eax
+	movl %eax, -4(%rbp)
+
+	movl -4(%rbp), %eax
 	movl %eax, %esi
 	leaq .LPNR(%rip), %rax
 	movq %rax, %rdi
@@ -61,7 +63,10 @@ main:
 	call printf@PLT
 	movl $0, %eax
 
-	movl -12(%rbp), %eax
+	movl $0, %eax
+	movl %eax, -4(%rbp)
+
+	movl -4(%rbp), %eax
 	movl %eax, %esi
 	leaq .LPNR(%rip), %rax
 	movq %rax, %rdi
@@ -69,20 +74,13 @@ main:
 	call printf@PLT
 	movl $0, %eax
 
-	movl -16(%rbp), %eax
-	movl %eax, %esi
-	leaq .LPNR(%rip), %rax
-	movq %rax, %rdi
-	movl $0, %eax
-	call printf@PLT
-	movl $0, %eax
+	movl -4(%rbp), %r14d
+	subl $4, %r14d
 
-	leaq .LP1(%rip), %rax
-	movq %rax, %rdi
-	call puts@PLT
-	movl $0, %eax
+	movl %r14d, %eax
+	movl %eax, -4(%rbp)
 
-	movl -20(%rbp), %eax
+	movl -4(%rbp), %eax
 	movl %eax, %esi
 	leaq .LPNR(%rip), %rax
 	movq %rax, %rdi
@@ -91,7 +89,7 @@ main:
 	movl $0, %eax
 
 	movq $60, %rax
-	movq -20(%rbp), %rdi
+	movq $0, %rdi
 	syscall
 
 	popq %rbp

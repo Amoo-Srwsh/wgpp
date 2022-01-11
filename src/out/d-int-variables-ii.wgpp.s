@@ -7,13 +7,19 @@
 		.string "%d\n"
 		.text
 
+	.data
+	.type .auxINT, @object
+	.auxINT:
+		.long 0
+		.text
+
 powM:
-	cmp %edi, %r15d
+	cmpl %edi, %r15d
 	jne powH
 	ret
 powH:
 	imul %r13d, %edx
-	inc %r15d
+	incl %r15d
 	jmp powM
 
 main:
@@ -111,9 +117,10 @@ main:
 	call printf@PLT
 	movl $0, %eax
 
-	mov $60, %rax
-	mov $0, %rdi
+	movq $60, %rax
+	movq $0, %rdi
 	syscall
 
 	popq %rbp
 	ret
+
