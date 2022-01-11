@@ -1,0 +1,19 @@
+int $y$ = 4;
+int $yx$ = ARITH($y$ mul -1);
+int $x$ = -1;
+
+# Done by Assembly #
+wout ARITH($y$ pot $y$);
+wout ARITH($y$ pot -1);
+wout ARITH($yx$ pot 3);
+wout ARITH($x$ pot $x$);
+wout ARITH($x$ pot 0);
+wout ARITH($x$ pot -34);
+
+wout "-------------------------";
+
+# Done by C++ #
+wout ARITH(-1 pot -1);
+wout ARITH(34 pot 0);
+
+exit 0;

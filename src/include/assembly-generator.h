@@ -42,14 +42,49 @@ std::string _wg_mke_string_label (FILE* dataS, std::string src) {
 }
 
 void start_codeS (FILE *codeS) {
+    fprintf(codeS, "# ------------------------------------------- POWER OPERATION -------------------------------------------\n");
     fprintf(codeS, "powM:\n");
+    fprintf(codeS, "\tcmpl $0, %%edi\n");
+    fprintf(codeS, "\tje powE_by_0\n");
+    fprintf(codeS, "\tcmpl $-1, %%edi\n");
+    fprintf(codeS, "\tjle powE_by_SN\n");
     fprintf(codeS, "\tcmpl %%edi, %%r15d\n");
     fprintf(codeS, "\tjne powH\n");
     fprintf(codeS, "\tret\n");
+
     fprintf(codeS, "powH:\n");
     fprintf(codeS, "\timul %%r13d, %%edx\n");
     fprintf(codeS, "\tincl %%r15d\n");
-    fprintf(codeS, "\tjmp powM\n\n");
+    fprintf(codeS, "\tjmp powM\n");
+
+    fprintf(codeS, "powE_by_0:\n");
+    fprintf(codeS, "\tmovl $1, %%edx\n");
+    fprintf(codeS, "\tret\n");
+
+    fprintf(codeS, "powE_by_SN:\n");
+    fprintf(codeS, "\tcmpl $-1, %%edx\n");
+    fprintf(codeS, "\tje powE_by_Sone\n");
+    fprintf(codeS, "\tcmpl $1, %%edx\n");
+    fprintf(codeS, "\tje powE_by_USone\n");
+    fprintf(codeS, "\tmovl $0, %%edx\n");
+    fprintf(codeS, "\tret\n");
+
+    fprintf(codeS, "powE_by_Sone:\n");
+    fprintf(codeS, "\tmovl $-1, %%edx\n");
+    fprintf(codeS, "\tret\n");
+
+    fprintf(codeS, "powE_by_USone:\n");
+    fprintf(codeS, "\tmovl $1, %%edx\n");
+    fprintf(codeS, "\tret\n");
+
+    fprintf(codeS, "return_help:\n");
+    fprintf(codeS, "\tret\n");
+    fprintf(codeS, "check_pwer_abs:\n");
+    fprintf(codeS, "\tcmpl $1, %%edx\n");
+    fprintf(codeS, "\tjge return_help\n");
+    fprintf(codeS, "\tnegl %%r13d\n");
+    fprintf(codeS, "\tret\n");
+    fprintf(codeS, "# ------------------------------------------- POWER OPERATION -------------------------------------------\n");
 }
 
 void _static_make_math_ (temp *_temp, std::vector<token> *op) {
@@ -121,8 +156,9 @@ void _static_make_math_ (temp *_temp, std::vector<token> *op) {
             if ( poStackCurrntVar )
                 _temp->code_ins += "\tmovl -" + std::to_string(poStackCurrntVar) + "(%rbp), %edi\n";
             else
-                _temp->code_ins += "\tmov $" + op->at(i + 1).value + ", %rdi\n";
+                _temp->code_ins += "\tmovl $" + op->at(i + 1).value + ", %edi\n";
             _temp->code_ins += "\tmovl $1, %r15d\n"
+                               "\tcall check_pwer_abs\n"
                                "\tcall powM\n"
                                "\tmovl %edx, %r14d\n";
         }
@@ -361,7 +397,7 @@ void _wg_chg_int_by_math_typeA (temp* _temp, std::vector<token> *op, std::string
     var* variable = get_variable(namev, NUMBER);
     _static_make_math_(_temp, op);
 
-    _temp->code_ins += "#-----------------------#\n\tmovl %r14d, %eax\n"
+    _temp->code_ins += "\tmovl %r14d, %eax\n"
                        "\tmovl %eax, -" + std::to_string(variable->idxStack) + "(%rbp)\n\n";
 }
 

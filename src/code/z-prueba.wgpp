@@ -1,4 +1,0 @@
-int $x$ = 2;
-wout ARITH($x$ pot -2);
-
-exit 0;

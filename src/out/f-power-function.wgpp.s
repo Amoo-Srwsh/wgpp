@@ -13,6 +13,10 @@
 		.long 0
 		.text
 
+	.LP1:
+		.string "-------------------------"
+		.text
+
 # ------------------------------------------- POWER OPERATION -------------------------------------------
 powM:
 	cmpl $0, %edi
@@ -57,44 +61,25 @@ main:
 	subq $4, %rsp
 	movl $4, -4(%rbp)
 
+	movl -4(%rbp), %r14d
+	imull $-1, %r14d
+
 	subq $4, %rsp
-	movl -4(%rbp), %eax
-	movl %eax, -8(%rbp)
+	movl %r14d, -8(%rbp)
 
-	movl -4(%rbp), %eax
-	movl %eax, %esi
-	leaq .LPNR(%rip), %rax
-	movq %rax, %rdi
-	movl $0, %eax
-	call printf@PLT
-	movl $0, %eax
+	subq $4, %rsp
+	movl $-1, -12(%rbp)
 
-	movl $5, %eax
-	movl %eax, -4(%rbp)
+	movl -4(%rbp), %r14d
+	movl %r14d, %edx
+	movl %r14d, %r13d
+	movl -4(%rbp), %edi
+	movl $1, %r15d
+	call check_pwer_abs
+	call powM
+	movl %edx, %r14d
 
-	movl -4(%rbp), %eax
-	movl %eax, %esi
-	leaq .LPNR(%rip), %rax
-	movq %rax, %rdi
-	movl $0, %eax
-	call printf@PLT
-	movl $0, %eax
-
-	movl -8(%rbp), %eax
-	movl %eax, -4(%rbp)
-
-	movl -4(%rbp), %eax
-	movl %eax, %esi
-	leaq .LPNR(%rip), %rax
-	movq %rax, %rdi
-	movl $0, %eax
-	call printf@PLT
-	movl $0, %eax
-
-	movl $0, %eax
-	movl %eax, -4(%rbp)
-
-	movl -4(%rbp), %eax
+	movl %r14d, %eax
 	movl %eax, %esi
 	leaq .LPNR(%rip), %rax
 	movq %rax, %rdi
@@ -103,12 +88,104 @@ main:
 	movl $0, %eax
 
 	movl -4(%rbp), %r14d
-	subl $4, %r14d
+	movl %r14d, %edx
+	movl %r14d, %r13d
+	movl $-1, %edi
+	movl $1, %r15d
+	call check_pwer_abs
+	call powM
+	movl %edx, %r14d
 
 	movl %r14d, %eax
-	movl %eax, -4(%rbp)
+	movl %eax, %esi
+	leaq .LPNR(%rip), %rax
+	movq %rax, %rdi
+	movl $0, %eax
+	call printf@PLT
+	movl $0, %eax
 
-	movl -4(%rbp), %eax
+	movl -8(%rbp), %r14d
+	movl %r14d, %edx
+	movl %r14d, %r13d
+	movl $3, %edi
+	movl $1, %r15d
+	call check_pwer_abs
+	call powM
+	movl %edx, %r14d
+
+	movl %r14d, %eax
+	movl %eax, %esi
+	leaq .LPNR(%rip), %rax
+	movq %rax, %rdi
+	movl $0, %eax
+	call printf@PLT
+	movl $0, %eax
+
+	movl -12(%rbp), %r14d
+	movl %r14d, %edx
+	movl %r14d, %r13d
+	movl -12(%rbp), %edi
+	movl $1, %r15d
+	call check_pwer_abs
+	call powM
+	movl %edx, %r14d
+
+	movl %r14d, %eax
+	movl %eax, %esi
+	leaq .LPNR(%rip), %rax
+	movq %rax, %rdi
+	movl $0, %eax
+	call printf@PLT
+	movl $0, %eax
+
+	movl -12(%rbp), %r14d
+	movl %r14d, %edx
+	movl %r14d, %r13d
+	movl $0, %edi
+	movl $1, %r15d
+	call check_pwer_abs
+	call powM
+	movl %edx, %r14d
+
+	movl %r14d, %eax
+	movl %eax, %esi
+	leaq .LPNR(%rip), %rax
+	movq %rax, %rdi
+	movl $0, %eax
+	call printf@PLT
+	movl $0, %eax
+
+	movl -12(%rbp), %r14d
+	movl %r14d, %edx
+	movl %r14d, %r13d
+	movl $-34, %edi
+	movl $1, %r15d
+	call check_pwer_abs
+	call powM
+	movl %edx, %r14d
+
+	movl %r14d, %eax
+	movl %eax, %esi
+	leaq .LPNR(%rip), %rax
+	movq %rax, %rdi
+	movl $0, %eax
+	call printf@PLT
+	movl $0, %eax
+
+	leaq .LP1(%rip), %rax
+	movq %rax, %rdi
+	call puts@PLT
+	movl $0, %eax
+
+	movl $-1, %eax
+	movl %eax, %esi
+	leaq .LPNR(%rip), %rax
+	movq %rax, %rdi
+	movl $0, %eax
+	call printf@PLT
+	movl $0, %eax
+
+	movl $1, %eax
 	movl %eax, %esi
 	leaq .LPNR(%rip), %rax
 	movq %rax, %rdi
